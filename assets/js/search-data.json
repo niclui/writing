@@ -31,9 +31,6 @@
   
 
   
-  
-
-  
 
   
   
@@ -44,13 +41,18 @@
   
 
   
+
+  
+  
+
+  
   
 
   
   
 
   
-      ,"page11": {
+      ,"page12": {
           "title": "",
           "content": "Sitemap: {{ “sitemap.xml” | absolute_url }} | .",
           "url": "https://nicholaslui97.github.io/writing/robots.txt",
