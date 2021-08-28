@@ -8,7 +8,7 @@ Thank you for visiting! I am Nicholas, a Statistics MS student and <a href="http
 
 In my free time, I box, run, and watch Netflix (trying to find a new show to binge watch now!). If you would like to chat about anything, please drop me a line via <a href="mailto:niclui@stanford.edu" title="niclui@stanford.edu">email</a> or <a href="https://www.linkedin.com/in/nicholas-lui/">LinkedIn</a>. Thank you for visiting :)
 
-<img src="https://user-images.githubusercontent.com/40440105/131223040-bd0db07e-ec8d-4f0b-8cfe-9f16bc0cdbfb.jpg" width=40% height=40%>
+<img src="https://user-images.githubusercontent.com/40440105/131223040-bd0db07e-ec8d-4f0b-8cfe-9f16bc0cdbfb.jpg" width=20% height=20%>
 <center><em>On the rustic streets of Athens (Dec 2019)</em></center>
 
 
