@@ -10,8 +10,11 @@ In my free time, I box, run, and watch Netflix (trying to find a new show to bin
 
 If you would like to chat about anything, please drop me a line via <a href="mailto:niclui@stanford.edu" title="niclui@stanford.edu">email</a> or <a href="https://www.linkedin.com/in/nicholas-lui/">LinkedIn</a>. Thank you for visiting :)
 
-![]({{ site.baseurl }}/images/greece.jpg)
+![greece](https://user-images.githubusercontent.com/40440105/131223654-9f4299dd-e983-4680-8848-0a5a16c60a73.jpg)
 <center><em>On the rustic streets of Athens (Dec 2019)</em></center>
+
+
+
 
 
 
