@@ -1,5 +1,6 @@
 ---
 layout: home
+title: Home
 search_exclude: true
 ---
 
