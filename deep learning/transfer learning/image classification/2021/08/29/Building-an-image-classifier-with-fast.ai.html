@@ -10,13 +10,14 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Exploring important concepts in AI (transfer learning, data augmentation, train-test-validation split) by building a simple dogs vs cats image classifier." />
 <meta property="og:description" content="Exploring important concepts in AI (transfer learning, data augmentation, train-test-validation split) by building a simple dogs vs cats image classifier." />
-<link rel="canonical" href="https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/28/Building-an-image-classifier-with-fast.ai.html" />
-<meta property="og:url" content="https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/28/Building-an-image-classifier-with-fast.ai.html" />
+<link rel="canonical" href="https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/29/Building-an-image-classifier-with-fast.ai.html" />
+<meta property="og:url" content="https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/29/Building-an-image-classifier-with-fast.ai.html" />
 <meta property="og:site_name" content="An adventure into AI" />
+<meta property="og:image" content="https://niclui.github.io/writing/images/dogcatpic.jpg" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-08-28T00:00:00-05:00" />
+<meta property="article:published_time" content="2021-08-29T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/28/Building-an-image-classifier-with-fast.ai.html","@type":"BlogPosting","headline":"Building an image classifier with fast.ai","dateModified":"2021-08-28T00:00:00-05:00","datePublished":"2021-08-28T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/28/Building-an-image-classifier-with-fast.ai.html"},"description":"Exploring important concepts in AI (transfer learning, data augmentation, train-test-validation split) by building a simple dogs vs cats image classifier.","@context":"https://schema.org"}</script>
+{"url":"https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/29/Building-an-image-classifier-with-fast.ai.html","@type":"BlogPosting","headline":"Building an image classifier with fast.ai","dateModified":"2021-08-29T00:00:00-05:00","datePublished":"2021-08-29T00:00:00-05:00","image":"https://niclui.github.io/writing/images/dogcatpic.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/29/Building-an-image-classifier-with-fast.ai.html"},"description":"Exploring important concepts in AI (transfer learning, data augmentation, train-test-validation split) by building a simple dogs vs cats image classifier.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/writing/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://niclui.github.io/writing/feed.xml" title="An adventure into AI" /><link rel="shortcut icon" type="image/x-icon" href="/writing/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -71,8 +72,8 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Building an image classifier with fast.ai</h1><p class="page-description">Exploring important concepts in AI (transfer learning, data augmentation, train-test-validation split) by building a simple dogs vs cats image classifier.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-08-28T00:00:00-05:00" itemprop="datePublished">
-        Aug 28, 2021
+    <h1 class="post-title p-name" itemprop="name headline">Building an image classifier with fast.ai</h1><p class="page-description">Exploring important concepts in AI (transfer learning, data augmentation, train-test-validation split) by building a simple dogs vs cats image classifier.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-08-29T00:00:00-05:00" itemprop="datePublished">
+        Aug 29, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
     
@@ -101,19 +102,19 @@ window.onload = wrap_img;
         <div class="pb-5 d-flex flex-wrap flex-justify-end">
           <div class="px-2">
 
-    <a href="https://github.com/nicholaslui97/writing/tree/master/_notebooks/2021-08-28-Building-an-image-classifier-with-fast.ai.ipynb" role="button" target="_blank">
+    <a href="https://github.com/nicholaslui97/writing/tree/master/_notebooks/2021-08-29-Building-an-image-classifier-with-fast.ai.ipynb" role="button" target="_blank">
 <img class="notebook-badge-image" src="/writing/assets/badges/github.svg" alt="View On GitHub">
     </a>
 </div>
 
           <div class="px-2">
-    <a href="https://mybinder.org/v2/gh/nicholaslui97/writing/master?filepath=_notebooks%2F2021-08-28-Building-an-image-classifier-with-fast.ai.ipynb" target="_blank">
+    <a href="https://mybinder.org/v2/gh/nicholaslui97/writing/master?filepath=_notebooks%2F2021-08-29-Building-an-image-classifier-with-fast.ai.ipynb" target="_blank">
         <img class="notebook-badge-image" src="/writing/assets/badges/binder.svg" alt="Open In Binder"/>
     </a>
 </div>
 
           <div class="px-2">
-    <a href="https://colab.research.google.com/github/nicholaslui97/writing/blob/master/_notebooks/2021-08-28-Building-an-image-classifier-with-fast.ai.ipynb" target="_blank">
+    <a href="https://colab.research.google.com/github/nicholaslui97/writing/blob/master/_notebooks/2021-08-29-Building-an-image-classifier-with-fast.ai.ipynb" target="_blank">
         <img class="notebook-badge-image" src="/writing/assets/badges/colab.svg" alt="Open In Colab"/>
     </a>
 </div>
@@ -125,14 +126,14 @@ window.onload = wrap_img;
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
-# file to edit: _notebooks/2021-08-28-Building-an-image-classifier-with-fast.ai.ipynb
+# file to edit: _notebooks/2021-08-29-Building-an-image-classifier-with-fast.ai.ipynb
 -->
 
 <div class="container" id="notebook-container">
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Hi there! Today, I would like to illustrate some essential deep learning concepts by going through the process of building a simple image classifier. What is the difference between a validation and test data-set? What exactly is transfer learning (and why is it so powerful)? What is data augmentation? Through this post, I hope to shed some light on some of these important ideas! Equally importantly, I hope to demonstrate that you can get good results without expensive GPUs (everything can be run on a free Google Colab notebook) or huge data-sets (I will be using a publicly available data-set on the competition platform Kaggle). Deep learning is a powerful tool that anyone can learn to harness - let's get coding!</p>
+<p>Hi there! Today, I would like to illustrate some essential deep learning concepts by going through the process of building a simple image classifier. What is the difference between a validation and test dataset? What exactly is transfer learning (and why is it so powerful)? What is data augmentation? Through this post, I hope to shed some light on some of these important ideas! Equally importantly, I hope to demonstrate that you can get good results without expensive GPUs (everything can be run on a free Google Colab notebook) or huge datasets (I will be using a publicly available dataset on the competition platform Kaggle). Deep learning is a powerful tool that anyone can learn to harness - let's get coding!</p>
 <p>In this exercise, I will be building a simple dogs vs cats image classifier. This may seem like a relatively inane task. But we can imagine how these models can be adapted for far-reaching applications - for instance in image classification for X-Ray scans, allowing medical professionals to quickly detect anomalies. Image classification is also extremely flexible - here's an <a href="https://towardsdatascience.com/sound-classification-using-images-68d4770df426">article</a> on how sound waves can be turned into spectrograms and fed into an image classification model.</p>
 <h2 id="Technologies"><strong>Technologies</strong><a class="anchor-link" href="#Technologies"> </a></h2><p>Everything is run on <a href="https://colab.research.google.com/notebooks/intro.ipynb?utm_source=scs-index">Google Colab</a> which gives you free access to GPUs and is run in a Jupyter-like environment. I will also be using the <a href="https://www.fast.ai/">fast.ai</a> library, which is designed to make deep learning much simpler and more powerful for practicioners. This blogpost follows fastai's <a href="https://course.fast.ai/">"Practical Deep Learning for Coders"</a> course (Lectures 2&amp;3).</p>
 
@@ -217,7 +218,7 @@ Mounted at /content/gdrive
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The data-set of dogs and cats pictures can be found here: <a href="https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/data">https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/data</a>. I have uploaded the zipped data-sets into Google Drive.</p>
+<p>The dataset of dogs and cats pictures can be found here: <a href="https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/data">https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/data</a>. I have uploaded the zipped datasets into Google Drive.</p>
 
 </div>
 </div>
@@ -312,14 +313,14 @@ Mounted at /content/gdrive
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can use the DataBlock API of fast.ai. A datablock is essentially a <strong>blueprint</strong> on how to assemble your data. It comprises five components:</p>
 <p><strong>1) What kind of data are we working with?</strong></p>
-<p>This is captured by "blocks=(ImageBlock, CategoryBlock)". The first item in the list is the independent variable and the second item is the dependent variable. In this case, we are saying that the dog/cat picture is the <em>independent variable</em> and the label (whether animal is a dog or cat) is the <em>dependent variable</em>.</p>
+<p>This is captured by "blocks=(ImageBlock, CategoryBlock)". The first block in the tuple is the input block, while the second block is the target block. In this case, the image is the input, and the image label (whether it is a dog or cat) is the actual target.</p>
 <p><strong>2) How to get the list of items?</strong></p>
 <p>This is captured by "get_items=get_image_files". get_image_files is a function which grabs the data from the specified path (in this case, we have defined the path to be the GDrive folder with our pictures inside)</p>
 <p><strong>3) How to label those items?</strong></p>
-<p>If you download the training data-set and unzip it, you will realise that the first 3 characters of the file name tells us whether its a dog or a cat. We can thus easily infer the label of the training data-point.</p>
+<p>If you download the training dataset and unzip it, you will realise that the first 3 characters of the file name tells us whether its a dog or a cat. We can thus easily infer the label of the training datapoint.</p>
 <p><strong>4) How to create the validation set?</strong></p>
-<p>This is captured by "splitter=RandomSplitter(valid_pct=0.2, seed=42)". We randomly split the data-set such that 20% of it is used for validation and 80% of it is used for training. By setting the random seed value to be a fixed constant (42), we ensure that the data-set will always be split the same way every time we run the DataBlock API. This is useful in helping us compare the validation metric performance between different models.</p>
-<p><strong>5) How to resize the data-set?</strong></p>
+<p>This is captured by "splitter=RandomSplitter(valid_pct=0.2, seed=42)". We randomly split the dataset such that 20% of it is used for validation and 80% of it is used for training. By setting the random seed value to be a fixed constant (42), we ensure that the dataset will always be split the same way every time we run the DataBlock API. This is useful in helping us compare the validation metric performance between different models.</p>
+<p><strong>5) How to resize the dataset?</strong></p>
 <p>This is captured by "item_tfms=Resize(128)". It is important to resize our images so that they are of the same size. This is because we pass small batches of images into our model (instead of one image at a time). As such, we need to make sure that all the images are of the same size. In this implementation, we resize our images to a dimension of 128x128 pixels.</p>
 
 </div>
@@ -327,10 +328,10 @@ Mounted at /content/gdrive
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="What-is-the-difference-between-the-training,-validation,-and-test-data-sets?"><strong>What is the difference between the training, validation, and test data-sets?</strong><a class="anchor-link" href="#What-is-the-difference-between-the-training,-validation,-and-test-data-sets?"> </a></h3><p>Great question! This is an important question that can leave many people confused. The <strong>training data-set</strong> is used to fit the model's parameters. However, if we train the model for a long time, we may run into the issue of <strong>overfitting</strong> - the neural network essentially "memorizes" the training data such that it can make perfect predictions there, but performs very poorly on unseen data.</p>
-<p>That's where the <strong>validation data-set</strong> comes in. After training the model, we 
-validate it against the validation data-set (using a metric we care about - for instance, accuracy of image classifications). This ensures that our model is indeed generalizable to unseen data (and is not simply overfitting on the training data).</p>
-<p>However, the model uses the validation results to tune its <em>hyperparameters</em>. This means that the model will also see the validation data and may overfit on it too. As one final check, we run the model on the <strong>test data-set</strong> - a completely unseen data-set that acts as the final arbiter of the model's performance.</p>
+<h3 id="What-is-the-difference-between-the-training,-validation,-and-test-datasets?"><strong>What is the difference between the training, validation, and test datasets?</strong><a class="anchor-link" href="#What-is-the-difference-between-the-training,-validation,-and-test-datasets?"> </a></h3><p>Great question! This is an important question that can leave many people confused. The <strong>training dataset</strong> is used to fit the model's parameters. However, if we train the model for a long time, we may run into the issue of <strong>overfitting</strong> - the neural network essentially "memorizes" the training data such that it can make perfect predictions there, but performs very poorly on unseen data.</p>
+<p>That's where the <strong>validation dataset</strong> comes in. After training the model, we 
+validate it against the validation dataset (using a metric we care about - for instance, accuracy of image classifications). This ensures that our model is indeed generalizable to unseen data (and is not simply overfitting on the training data).</p>
+<p>However, the model uses the validation results to tune its <em>hyperparameters</em>. This means that the model will also see the validation data and may overfit on it too. As one final check, we run the model on the <strong>test dataset</strong> - a completely unseen dataset that acts as the final arbiter of the model's performance.</p>
 <p>Here is a <a href="https://machinelearningmastery.com/difference-between-a-parameter-and-a-hyperparameter/#:~:text=In%20summary%2C%20model%20parameters%20are,be%20set%20manually%20and%20tuned.">good explanation</a> on the difference between model parameters and hyperparameters.</p>
 
 </div>
@@ -378,7 +379,7 @@ validate it against the validation data-set (using a metric we care about - for 
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now, we will create a DataLoader which is a special class that allows us to manage our data-set. Dataloader can be used to iterate through the data, manage batches, transform the data, and much more. To create a DataLoader, we need to pass in the blueprints for assembling the data (DataBlock) and where we can find the data (path/"train").</p>
+<p>Now, we will create a DataLoader which is a special class that allows us to manage our dataset. DataLoader can be used to iterate through the data, manage batches, transform the data, and much more. To create a DataLoader, we need to pass in the blueprints for assembling the data (DataBlock) and where we can find the data (path/"train").</p>
 
 </div>
 </div>
@@ -496,12 +497,12 @@ X = torch.linalg.solve(A, B) (Triggered internally at  /pytorch/aten/src/ATen/na
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Transfer-Learning"><strong>Transfer Learning</strong><a class="anchor-link" href="#Transfer-Learning"> </a></h3><p>In the cell below, I am performing <strong>transfer learning</strong>. Transfer learning is the process of adapting a pre-trained model for a task that it was not originally trained for. There are lots of fantastic pre-trained models out there - models which have been trained on large amounts of data and have proven to be effective for a wide variety of tasks. It is far better to build on these great baseline models, rather than create something completely from scratch.</p>
-<p>In this case, we use the ResNet model, a pre-trained model with proven success for a wide variety of image classification tasks. The 18 indicates that I am using the version with 18 layers.</p>
+<p>In this case, we use the ResNet model, a pre-trained model with proven success for a wide variety of image classification tasks. The 18 indicates that I am using the version with 18 layers. ResNet18 was trained on &gt;1 million images from the ImageNet database. It can classify images into 1000 object categories (from animals to people to household objects) and has thus learned rich feature representations for a wide variety of categories.</p>
 <p>To customize this pre-trained model for our specific use case (dogs vs cats), we need to fine tune the model. Fine-tuning generally involves three steps:</p>
 <p>1) Firstly, we remove the last layer of the pre-trained ResNet model. This last layer is always specially customized to the original task of the pre-trained model. Thus, we replace that last layer with one or more layers of our own. These layers are initialized with randomised parameters. We call these layers the "head".</p>
 <p>2) Secondly, we use one epoch to train this new head, ensuring that is customized for our specific use case. One epoch passes when the model looks at every single image once.</p>
 <p>3) Finally, we use the total number of epochs requested (in our example, this is 3) to re-fit the entire model. However, we will be updating the parameters of the later layers faster than that of the earlier layers. Intuitively, you can think of the earlier layers of the ResNet model as capturing fundamental patterns and relationships (for instance, edge and colour detection). These fundamental patterns are crucial for any image classification problem. As such, we are quite happy to keep these layers relatively intact.</p>
-<p>On the other hand, the later layers start to capture patterns and relationships that are more customized for the original use case. For instance, if the ResNet model was originally tasked to classify different types of trees, the later layers may capture patterns like the texture of the bark. These aren't useful for classifying dogs vs cats, and so we update the parameters more liberally.</p>
+<p>On the other hand, the later layers start to capture patterns and relationships that are more customized for the original use case. For instance, the ResNet model was designed to classify images into 1000 categories. The later layers may thus capture patterns and relationships customized for different categories (e.g. the texture of the tree bark for tree classification). These aren't useful for classifying dogs vs cats, and so we update the parameters more liberally.</p>
 
 </div>
 </div>
@@ -612,15 +613,15 @@ X = torch.linalg.solve(A, B) (Triggered internally at  /pytorch/aten/src/ATen/na
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Our validation results are promising with an error rate of 2.1% (i.e. only 2.1% of images in our validation data-set were wrongly classified).</p>
+<p>Our validation results are promising with an error rate of 2.1% (i.e. only 2.1% of images in our validation dataset were wrongly classified).</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Confusion-Matrix"><strong>Confusion Matrix</strong><a class="anchor-link" href="#Confusion-Matrix"> </a></h3><p>A confusion matrix is a great way of understanding how our model performed on the validation or test data-sets. The diagonal values represent accurate predictions, while the off-diagonal values represent misses. For instance, we can see that in our validation data-set, we correctly identified 2482 cats as cats, but mistook 48 cats for being dogs.</p>
-<p>Confusion matrices offer a higher degree of granularity than a simple error rate. They allow us to zoom in on how our model worked for individual categories. This can be extremely useful in the case of class imbalance. Consider a credit card fraud detector. Most of the transactions in the training data-set should be "clean", while a tiny proportion is fraudulent. If we are not careful, training our model on such imbalanced data may result in a model that always predicts the "clean" label. When testing this model on an unseen data-set, we may get an extremely good error rate. The model always predicts "clean", and only a tiny proportion of the datapoints are fraudulent. As such, the <strong>overall</strong> error rate is going to be very low. However, if we examine the confusion matrix, we will realise that we are misclassifying all the fraudulent cases as "clean" - this means that our model has failed to actually detecting fraud!</p>
+<h3 id="Confusion-Matrix"><strong>Confusion Matrix</strong><a class="anchor-link" href="#Confusion-Matrix"> </a></h3><p>A confusion matrix is a great way of understanding how our model performed on the validation or test datasets. The diagonal values represent accurate predictions, while the off-diagonal values represent misses. For instance, we can see that in our validation dataset, we correctly identified 2482 cats as cats, but mistook 48 cats for being dogs.</p>
+<p>Confusion matrices offer a higher degree of granularity than a simple error rate. They allow us to zoom in on how our model worked for individual categories. This can be extremely useful in the case of class imbalance. Consider a credit card fraud detector. Most of the transactions in the training dataset should be "clean", while a tiny proportion is fraudulent. If we are not careful, training our model on such imbalanced data may result in a model that always predicts the "clean" label. When testing this model on an unseen dataset, we may get an extremely good error rate. The model always predicts "clean", and only a tiny proportion of the datapoints are fraudulent. As such, the <strong>overall</strong> error rate is going to be very low. However, if we examine the confusion matrix, we will realise that we are misclassifying all the fraudulent cases as "clean" - this means that our model has failed to actually detecting fraud!</p>
 
 </div>
 </div>
@@ -671,7 +672,7 @@ X = torch.linalg.solve(A, B) (Triggered internally at  /pytorch/aten/src/ATen/na
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Model-post-mortem"><strong>Model post-mortem</strong><a class="anchor-link" href="#Model-post-mortem"> </a></h3><p>We can pull out the images in the validation data-set that we wrongly classified or were not confident about. This can give some insight on where our model may be underperforming. For instance, we may realise that our model is doing badly on poorly lit pictures. In contrast, we may even realise that certain pictures in our validation data-set were incorrectly labelled. By doing this simple analysis, we can identify ways in which we can improve our model before running it against the final test data-set.</p>
+<h3 id="Model-post-mortem"><strong>Model post-mortem</strong><a class="anchor-link" href="#Model-post-mortem"> </a></h3><p>We can pull out the images in the validation dataset that we wrongly classified or were not confident about. This can give some insight on where our model may be underperforming. For instance, we may realise that our model is doing badly on poorly lit pictures. In contrast, we may even realise that certain pictures in our validation dataset were incorrectly labelled. By doing this simple analysis, we can identify ways in which we can improve our model before running it against the final test dataset.</p>
 <p>In the cell below, each image is labeled with four things: prediction, actual label, loss, and probability. The probability here is the confidence level, from zero to one, that the model has assigned to its prediction:</p>
 
 </div>
@@ -713,7 +714,7 @@ X = torch.linalg.solve(A, B) (Triggered internally at  /pytorch/aten/src/ATen/na
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can see that our model may be underperforming on pictures in which the animal is seen from an uncommon angle (e.g. top-down) or if the resolution is poor. To circumvent this issue, we may want to expand our training data-set with more angles/lower-res photos. Alternatively, we can create greater variations through data augmentation. Once we are happy with the model, we can start to test it against a completely unseen test data-set.</p>
+<p>We can see that our model may be underperforming on pictures in which the animal is seen from an uncommon angle (e.g. top-down) or if the resolution is poor. To circumvent this issue, we may want to expand our training dataset with more angles/lower-res photos. Alternatively, we can create greater variations through data augmentation. Once we are happy with the model, we can start to test it against a completely unseen test dataset.</p>
 
 </div>
 </div>
@@ -792,10 +793,10 @@ X = torch.linalg.solve(A, B) (Triggered internally at  /pytorch/aten/src/ATen/na
 
 
 
-<div id="c6cc61f7-5654-4e17-980d-5d15bac3632c"></div>
+<div id="389ea599-ed21-46a1-bb6c-45da76c62baa"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#c6cc61f7-5654-4e17-980d-5d15bac3632c');
+var element = $('#389ea599-ed21-46a1-bb6c-45da76c62baa');
 
     async function download(id, filename, size) {
       if (!google.colab.kernel.accessAllowed) {
@@ -847,10 +848,10 @@ var element = $('#c6cc61f7-5654-4e17-980d-5d15bac3632c');
 
 
 
-<div id="143d27d6-0aa1-4a7e-bc43-2cc13e713bcb"></div>
+<div id="29876c9e-76e8-4474-adf7-07a4bca907e5"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#143d27d6-0aa1-4a7e-bc43-2cc13e713bcb');
+var element = $('#29876c9e-76e8-4474-adf7-07a4bca907e5');
 download("download_dc86be0a-b2af-4448-a851-d90213b91387", "export.pkl", 47312801)
 </script>
 </div>
@@ -1251,10 +1252,10 @@ download("download_dc86be0a-b2af-4448-a851-d90213b91387", "export.pkl", 47312801
 
 
 
-<div id="148912bf-a042-4696-8ff6-6b7dd4977c48"></div>
+<div id="750c126e-a124-4add-bff7-1618fa64201e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#148912bf-a042-4696-8ff6-6b7dd4977c48');
+var element = $('#750c126e-a124-4add-bff7-1618fa64201e');
 
     async function download(id, filename, size) {
       if (!google.colab.kernel.accessAllowed) {
@@ -1306,10 +1307,10 @@ var element = $('#148912bf-a042-4696-8ff6-6b7dd4977c48');
 
 
 
-<div id="1f9f261f-417c-404f-ae03-e1d0a39bf7d5"></div>
+<div id="34083795-427e-4e1e-8817-60e1f79460f3"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#1f9f261f-417c-404f-ae03-e1d0a39bf7d5');
+var element = $('#34083795-427e-4e1e-8817-60e1f79460f3');
 download("download_3a0594ad-b801-4ffd-afdb-f41f1c421194", "submission.csv", 317195)
 </script>
 </div>
@@ -1328,7 +1329,8 @@ download("download_3a0594ad-b801-4ffd-afdb-f41f1c421194", "submission.csv", 3171
 <p>1) Training vs Validation vs Test data: The <strong>training data</strong> is used to fit the model's parameters. To avoid overfitting on the training data, we use the <strong>validation data</strong> to evaluate the model's performance during training. The <strong>test data</strong> is used as the final arbiter of the model's performance.</p>
 <p>2) Data Augmentation: Creating random variations of the same picture (e.g. different angles, brightness). This allows the model to learn fundamental characteristics about the object, <strong>improving its ability to generalize</strong>.</p>
 <p>3) Transfer Learning: Transfer learning is the process of <strong>adapting a pre-trained model for a task that it was not originally trained for</strong>. This allows us to leverage extremely powerful models to achieve excellent results for our specific use case.</p>
-<p>That is all for today. Hope you enjoyed reading!</p>
+<p>That's all for today. Hope you enjoyed reading!</p>
+<p>(Picture credit: petsworld.in)</p>
 
 </div>
 </div>
@@ -1349,7 +1351,7 @@ download("download_3a0594ad-b801-4ffd-afdb-f41f1c421194", "submission.csv", 3171
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/28/Building-an-image-classifier-with-fast.ai.html" hidden></a>
+</script><a class="u-url" href="/writing/deep%20learning/transfer%20learning/image%20classification/2021/08/29/Building-an-image-classifier-with-fast.ai.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
