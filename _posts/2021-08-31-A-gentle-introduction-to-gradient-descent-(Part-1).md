@@ -1,6 +1,6 @@
 ---
 title: A gentle introduction to gradient descent (Part 1)
-description: What is gradient descent and why is it important? 
+description: An intuitive overview of key concepts in gradient descent.
 toc: true
 comments: true
 layout: post
@@ -25,9 +25,10 @@ To illustrate this concept, let us imagine that we are building a model which ca
 We are training our model on a large dataset of handwritten 3s and 7s - for simplicity, the pictures are all grayscale and have the same dimensions.
 
 <figure>
-<img src="images/handwritten37.png" width="30%">
-<figcaption align = "center"><em>Source: 1001 Free Downloads</em></figcaption>
+<center><img src="https://user-images.githubusercontent.com/40440105/131346014-7e7ffbc6-2c6d-4280-b367-60236f9a29fd.png" width=40%></center>
+<figcaption align = "center"><em>Source: fast.ai</em></figcaption>
 </figure>
+
 
 ## How does gradient descent work?
 **Step 1: Initializing a bunch of parameters**
@@ -63,7 +64,7 @@ in the bottom right hand corner of the picture. We expect this pixel to be "acti
 on that pixel so that our model will churn out a higher probability (that the number is 3) everytime that pixel is dark.
 
 <figure>
-<center><img src="images/gd1.png" width=40%></center>
+<center><img src="https://user-images.githubusercontent.com/40440105/131346077-0d59473a-81a9-47c4-b18e-1165581dbea5.png" width=40%></center>
 <figcaption align = "center"><em>Source: fast.ai</em></figcaption>
 </figure>
 
@@ -78,7 +79,7 @@ on that pixel so that our model will churn out a higher probability (that the nu
 Eventually, after multiple rounds of iteration, we will reach the local minima of the loss function. At this point, our gradient is zero and any further adjustments to the weight will increase loss.
 
 <figure>
-<center><img src="images/gd2.png" width=40%></center>
+<center><img src="https://user-images.githubusercontent.com/40440105/131346106-76ac6136-b68d-49be-b688-0a00f20fa158.png" width=40%></center>
 <figcaption align = "center"><em>Source: fast.ai</em></figcaption>
 </figure>
 
@@ -90,7 +91,7 @@ eventually reach the bottom of a valley (local minima).
 
 
 <figure>
-<center><img src="images/skye.png" width=40%></center>
+<center><img src="https://user-images.githubusercontent.com/40440105/131346134-1f272888-a46b-4935-b2c1-3889ebeda09e.png" width=40%></center>
 <figcaption align = "center"><em>The beautiful Isle of Skye (source: inspiredbymaps)</em></figcaption>
 </figure>
 
@@ -103,10 +104,9 @@ eventually reach the bottom of a valley (local minima).
 > A much larger adjustment in a weight is needed to induce a change in our predictions.
 > Consequently, we use a continuous loss function which improves when we make correct predictions with slightly more confidence, or make wrong predictions with slightly less confidence.
 > <figure>
-<img src="images/desmos_step.png" width=40%>
+<img src="https://user-images.githubusercontent.com/40440105/131346231-7fa61d58-f0c9-43af-8639-378047baef32.png" width=40%>
 <figcaption align = "center"><em>Source: Desmos</em></figcaption>
 </figure>
-
 
 ## What are the limitations of gradient descent?
 
@@ -114,7 +114,7 @@ There are two key limitations behind standard gradient descent (or batch gradien
 - Firstly, it is possible that we can get stuck in a local minima of the loss function, preventing us from accessing the better global minima. Consider the illustration below. We start at point U and adjust iteratively until we hit the local minima and the GD algorithm terminates.
 
 <figure>
-<img src="images/minima2.png" width=40%>
+<img src="https://user-images.githubusercontent.com/40440105/131346184-1343ade2-feba-4d7a-ad1f-b54405a62918.png" width=40%>
 <figcaption align = "center"><em>Source: Analytics Vidhya</em></figcaption>
 </figure>
 
