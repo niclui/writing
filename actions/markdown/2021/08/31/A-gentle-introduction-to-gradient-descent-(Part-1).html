@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>A gentle introduction to gradient descent (Part 1) | An adventure into AI</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="A gentle introduction to gradient descent (Part 1)" />
+<meta name="author" content="Nicholas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="What is gradient descent and why is it important?" />
+<meta property="og:description" content="What is gradient descent and why is it important?" />
+<link rel="canonical" href="https://niclui.github.io/writing/actions/markdown/2021/08/31/A-gentle-introduction-to-gradient-descent-(Part-1).html" />
+<meta property="og:url" content="https://niclui.github.io/writing/actions/markdown/2021/08/31/A-gentle-introduction-to-gradient-descent-(Part-1).html" />
+<meta property="og:site_name" content="An adventure into AI" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-08-31T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://niclui.github.io/writing/actions/markdown/2021/08/31/A-gentle-introduction-to-gradient-descent-(Part-1).html","@type":"BlogPosting","headline":"A gentle introduction to gradient descent (Part 1)","dateModified":"2021-08-31T00:00:00-05:00","datePublished":"2021-08-31T00:00:00-05:00","author":{"@type":"Person","name":"Nicholas"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/actions/markdown/2021/08/31/A-gentle-introduction-to-gradient-descent-(Part-1).html"},"description":"What is gradient descent and why is it important?","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/writing/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://niclui.github.io/writing/feed.xml" title="An adventure into AI" /><link rel="shortcut icon" type="image/x-icon" href="/writing/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/writing/">An adventure into AI</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/writing/about/">About Me</a><a class="page-link" href="/writing/">Home</a><a class="page-link" href="/writing/search/">Search</a><a class="page-link" href="/writing/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">A gentle introduction to gradient descent (Part 1)</h1><p class="page-description">What is gradient descent and why is it important?</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-08-31T00:00:00-05:00" itemprop="datePublished">
+        Aug 31, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Nicholas</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      10 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/writing/categories/#actions">actions</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/writing/categories/#markdown">markdown</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#gradient-descent">Gradient descent</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#what-are-the-limitations-of-gradient-descent">What are the limitations of gradient descent?</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#other-flavours-of-gradient-descent">Other flavours of gradient descent</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#stochastic-gradient-descent">Stochastic gradient descent</a></li>
+<li class="toc-entry toc-h2"><a href="#mini-batch-gradient-descent">Mini-batch gradient descent</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+</ul><p>Gradient descent is one of the key foundations of machine learning. Today, I hope to give a high-level and intuitive overview of this concept.
+In the next blogpost, we will be fleshing out these ideas in actual code and with the <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST dataset</a>.</p>
+
+<h1 id="gradient-descent">
+<a class="anchor" href="#gradient-descent" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradient descent</h1>
+<p>Recall the process of training a machine learning model. The steps broadly involve:</p>
+<ul>
+  <li>Initializing a bunch of parameters</li>
+  <li>Using those parameters to make predictions from your input</li>
+  <li>Based on the quality of your predictions, tweaking your parameters to make the model better</li>
+  <li>Repeating steps 2 and 3 until you are satisfied with your model (e.g. when the overall prediction error is below a certain threshold).</li>
+</ul>
+
+<p>Gradient descent (GD) is an algorithm that helps us accomplish these steps.
+To illustrate this concept, let us imagine that we are building a model which can help us distinguish between two handwritten digits - say, the numbers 3 and 7.
+We are training our model on a large dataset of handwritten 3s and 7s - for simplicity, the pictures are all grayscale and have the same dimensions.</p>
+
+<figure>
+<img src="images/handwritten37.png" width="30%">
+<figcaption align="center"><em>Source: 1001 Free Downloads</em></figcaption>
+</figure>
+
+<p><strong>Step 1: Initializing a bunch of parameters</strong></p>
+
+<p>In this case, our parameters can be the weights attached to every individual pixel of a picture. So for a 100x100 image, we will have a set of 10,000 weights.
+Let’s say our GD algorithm starts off by assigning the same weight to every pixel.</p>
+
+<p><strong>Step 2: Using those parameters to make predictions from your input</strong></p>
+
+<p>We can multiply the value of every pixel (between 0 and 255) with its weight. After that, get the average weighted value across all pixels.
+Following which, pass that value into a special function (e.g. Sigmoid function) to generate a probability between 0 and 1.
+If that probability is &gt;0.5, predict a 3. If not, predict a 7.</p>
+
+<p><strong>Step 3: Tweaking your parameters</strong></p>
+
+<p>The magic of gradient descent happens here. Intuitively, we want to update our parameters in a way that will make our predictions better.</p>
+
+<p>Let’s imagine that we are updating the weight attached to the pixel in column n and row m. We plot this weight on the x-axis.
+On the y-axis, we will plot the <strong>loss function</strong> with respect to that weight. What is the loss function?
+Essentially, it is a function that will return a small value when your model is good, and a large value when your model is bad.
+For instance, we can think of a function that will return our model’s probability (that the number is 3) when the true label is “7” and 1 - our model’s probability when the true
+label is “3”. This means that the loss function will give us a small value when we are making a correct prediction with high confidence, a medium value when we are
+making a correct prediction with poor confidence, and a large value when we are making a wrong prediction.</p>
+
+<p>Gradient descent involves us taking iterative steps to find the local minima of the loss function (with respect to the parameter we are adjusting).
+Consider the case of a convex loss function (see picture below). Let’s say that we initialize our weight at a value of 1. The GD algorithm will calculate the gradient at that point.
+To calculate the gradient, we can adjust the weight by a tiny margin (holding other weights constant) and see the impact that it has on the loss function.
+By dividing the change in loss by the change in weight, we get the gradient.</p>
+
+<p>The algorithm will then increase/decrease the value of x by the value of the gradient multiplied by a specified learning rate. Since the gradient is negative (i.e. we will
+reduce our loss by increasing our weight), the algorithm will increase the weight by the value of gradient * the learning rate. This is likely the case if the pixel in question is
+in the bottom right hand corner of the picture. We expect this pixel to be “activated” for the number 3, but not for the number “7”. Thus, we place a higher weight
+on that pixel so that our model will churn out a higher probability (that the number is 3) everytime that pixel is dark.</p>
+
+<figure>
+<center>&lt;img src="images/gd1.png" width=40%&gt;</center>
+<figcaption align="center"><em>Source: fast.ai</em></figcaption>
+</figure>
+
+<blockquote>
+  <p>Tip: The learning rate controls the rate at which the model adjusts its parameters. Selecting the optimal learning rate is tricky. If we select an overly large rate, the model will adjust the parameters by huge amounts, potentially resulting in us bypassing the local minima. In contrast, if the learning rate is too small, it will take a long time to reach the local minima. 
+There are several ways to tune this important hyperparameter.
+For instance, you could do learning rate annealing. Start off with a high learning rate so that you can quickly descend to an acceptable set of parameter values.
+After that, decrease your learning rate so that you can precisely locate the optimal value within the acceptable range.
+Here’s a <a href="https://automaticaddison.com/how-to-choose-an-optimal-learning-rate-for-gradient-descent/">good article</a> which explains more.</p>
+</blockquote>
+
+<p><strong>Step 4: Iterate until you are satisfied</strong></p>
+
+<p>Eventually, after multiple rounds of iteration, we will reach the local minima of the loss function. At this point, our gradient is zero and any further adjustments to the weight will increase loss.</p>
+
+<figure>
+<center>&lt;img src="images/gd2.png" width=40%&gt;</center>
+<figcaption align="center"><em>Source: fast.ai</em></figcaption>
+</figure>
+
+<p>We repeat this process for every weight (all 10,000 of them!).</p>
+
+<p>A common analogy for gradient descent is that of a blindfolded hiker who is stuck on the side of a hill. He wants to get to as low a point as possible.
+Thus, he feels the ground around him and takes a small step in the steepest downward direction. This is one iteration. By taking many of these small steps, he will
+eventually reach the bottom of a valley (local minima).</p>
+
+<figure>
+<center>&lt;img src="images/skye.png" width=40%&gt;</center>
+<figcaption align="center"><em>The beautiful Isle of Skye (source: inspiredbymaps)</em></figcaption>
+</figure>
+
+<blockquote>
+  <p>Tip: Note that gradient descent requires our loss function to be continuous and smooth. 
+What if our loss function is discontinuous - say, a step function?
+To illustrate this, initialize our weight at 1. The gradient at that point is completely flat. Thus, the GD algorithm will terminate immediately.
+However, if we increased our weight by a larger amount, we could have moved to a lower step of the loss function. In this instance, the GD algorithm will not give us good results and the model will not learn well.
+This is why we cannot use accuracy (the % of correct classifications) as our loss function. We can imagine accuracy to be represented by a step function - if we change
+a weight by a tiny amount, we do not expect any prediction to change from a 3 to 7 (or vice versa). As such, accuracy remains unchanged.
+A much larger adjustment in a weight is needed to induce a change in our predictions.
+Consequently, we use a continuous loss function which improves when we make correct predictions with slightly more confidence, or make wrong predictions with slightly less confidence.</p>
+  <figure>
+&lt;img src="images/desmos_step.png" width=40%&gt;
+</figure>
+</blockquote>
+<figcaption align="center"><em>Source: Desmos</em></figcaption>
+<p>&lt;/figure&gt;</p>
+
+<h2 id="what-are-the-limitations-of-gradient-descent">
+<a class="anchor" href="#what-are-the-limitations-of-gradient-descent" aria-hidden="true"><span class="octicon octicon-link"></span></a>What are the limitations of gradient descent?</h2>
+
+<p>There are two key limitations behind standard gradient descent (or batch gradient descent):</p>
+<ul>
+  <li>Firstly, it is possible that we can get stuck in a local minima of the loss function, preventing us from accessing the better global minima. Consider the illustration below. We start at point U and adjust iteratively until we hit the local minima and the GD algorithm terminates.</li>
+</ul>
+
+<figure>
+&lt;img src="images/minima2.png" width=40%&gt;
+<figcaption align="center"><em>Source: Analytics Vidhya</em></figcaption>
+</figure>
+
+<ul>
+  <li>Secondly, in standard gradient descent, we use every single datapoint in our training set to compute gradients. Let’s say we have 5,000 training images. For a given parameter, we use all 5,000 images to calculate individual losses and take the mean. After that, we adjust the parameter value slightly and re-calculate the loss for all 5,000 images (taking the mean again). The difference in means divided by the difference in weight is the gradient. When the training set is large, this process becomes computationally intensive.</li>
+</ul>
+
+<h1 id="other-flavours-of-gradient-descent">
+<a class="anchor" href="#other-flavours-of-gradient-descent" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other flavours of gradient descent</h1>
+<h2 id="stochastic-gradient-descent">
+<a class="anchor" href="#stochastic-gradient-descent" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stochastic gradient descent</h2>
+
+<p>To remedy those limitations, stochastic gradient descent is a popular alternative.
+In stochastic gradient descent, we do not use the entire training dataset in our computation of gradients. Instead, in each iteration, we randomly select a training datapoint to do so.
+This gives us a stochastic (i.e. random) approximation to the gradient calculated with the entire training dataset. By constantly iterating, the parameter value should
+move in the same general direction (as standard gradient descent), while being computationally more efficient.</p>
+
+<p>The randomness can also allow us to escape local minima. Every training datapoint has its own unique loss function. In standard gradient descent, we average all these
+loss functions into one aggregate loss function. In unfortunate cases, we will
+move down that average loss function into a sub-optimal local minima where we are trapped forever.</p>
+
+<p>However, in stochastic gradient descent, we can potentially avoid this negative outcome. In each iteration, we hop from the loss function of one training datapoint
+to another. Even if we get stuck in the local minima of a loss function, we can move to a new loss function in the next iteration (where our current parameter value is not
+in a local minima anymore). This allows us to keep moving and iterating.</p>
+
+<p>Stochastic gradient descent faces two key weaknesses:</p>
+<ul>
+  <li>The stochastic steps it take can be very noisy. This may result in us taking more time to converge 
+to the local minima of the loss function (ignoring the case where the local minima may be sub-optimal). Stochastic gradient descent is computationally more efficient, but may end up taking more time.</li>
+  <li>Computing infrastructure in ML (e.g. GPUs) are optimised for vectorized operations (vector addition, multiplication). Given that we use only one training datapoint at a time, we give up this powerful capability.</li>
+</ul>
+
+<h2 id="mini-batch-gradient-descent">
+<a class="anchor" href="#mini-batch-gradient-descent" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mini-batch gradient descent</h2>
+
+<p>Mini-batch gradient descent is a compromise between standard gradient descent and stochastic gradient descent. We do not use the entire training dataset or a single training datapoint.
+Instead, we use small batches (typically ~30-500) of training datapoints to compute our gradient. Given that we use small batches of datapoints at a time, we are also able to harness the performance of GPUs in vectorized operations.</p>
+
+<h1 id="conclusion">
+<a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h1>
+
+<p>I hope this article has given you a good overview of the key concepts in gradient descent! Here’s a quick summary:</p>
+
+<ul>
+  <li>Gradient descent is an algorithm that allows us to iteratively adjust our model’s parameters for better performance. We adjust our parameters in a direction that brings us down the loss function.</li>
+  <li>The two biggest limitations of standard gradient descent are 1) the possibility that we may be trapped in the local minima of our loss function, and 2) the computational cost.</li>
+  <li>Stochastic and mini-batch gradient descent are popular alternatives that mitigate some of these issues.</li>
+</ul>
+
+<p>Hope you enjoyed reading! In the next blogpost, we will be fleshing out these high-level concepts in actual code - see you then!</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="nicholaslui97/writing"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/writing/actions/markdown/2021/08/31/A-gentle-introduction-to-gradient-descent-(Part-1).html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/writing/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/writing/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/writing/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://www.linkedin.com/in/nicholas-lui" title="nicholas-lui"><svg class="svg-icon grey"><use xlink:href="/writing/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
