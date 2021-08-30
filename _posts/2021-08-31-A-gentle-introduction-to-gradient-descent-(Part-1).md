@@ -13,6 +13,7 @@ Gradient descent is one of the key foundations of machine learning. Today, I hop
 In the next blogpost, we will be fleshing out these ideas in actual code and with the <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST dataset</a>.
 
 # Gradient descent
+## Background
 Recall the process of training a machine learning model. The steps broadly involve:
 - Initializing a bunch of parameters
 - Using those parameters to make predictions from your input
@@ -28,6 +29,7 @@ We are training our model on a large dataset of handwritten 3s and 7s - for simp
 <figcaption align = "center"><em>Source: 1001 Free Downloads</em></figcaption>
 </figure>
 
+## How does gradient descent work?
 **Step 1: Initializing a bunch of parameters**
 
 In this case, our parameters can be the weights attached to every individual pixel of a picture. So for a 100x100 image, we will have a set of 10,000 weights.
