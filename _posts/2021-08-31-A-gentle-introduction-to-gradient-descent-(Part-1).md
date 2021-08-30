@@ -24,11 +24,8 @@ Gradient descent (GD) is an algorithm that helps us accomplish these steps.
 To illustrate this concept, let us imagine that we are building a model which can help us distinguish between two handwritten digits - say, the numbers 3 and 7.
 We are training our model on a large dataset of handwritten 3s and 7s - for simplicity, the pictures are all grayscale and have the same dimensions.
 
-<figure>
-<center><img src="https://user-images.githubusercontent.com/40440105/131346014-7e7ffbc6-2c6d-4280-b367-60236f9a29fd.png" width=40%></center>
-<figcaption align = "center"><em>Source: fast.ai</em></figcaption>
-</figure>
-
+<img width="40%" alt="handwritten37" src="https://user-images.githubusercontent.com/40440105/131346647-7520b550-7ece-457d-9f23-92bb92ec5457.png">
+<center><em>Source: 1001 Free Downloads</em></center>
 
 ## How does gradient descent work?
 **Step 1: Initializing a bunch of parameters**
@@ -63,10 +60,8 @@ reduce our loss by increasing our weight), the algorithm will increase the weigh
 in the bottom right hand corner of the picture. We expect this pixel to be "activated" for the number 3, but not for the number "7". Thus, we place a higher weight
 on that pixel so that our model will churn out a higher probability (that the number is 3) everytime that pixel is dark.
 
-<figure>
-<center><img src="https://user-images.githubusercontent.com/40440105/131346077-0d59473a-81a9-47c4-b18e-1165581dbea5.png" width=40%></center>
-<figcaption align = "center"><em>Source: fast.ai</em></figcaption>
-</figure>
+<img width="40%" alt="gd1" src="https://user-images.githubusercontent.com/40440105/131346851-985a63e7-0013-4f05-9ea5-a89d31d74c2d.png">
+<center><em>Source: fast.ai</em></center>
 
 > Tip: The learning rate controls the rate at which the model adjusts its parameters. Selecting the optimal learning rate is tricky. If we select an overly large rate, the model will adjust the parameters by huge amounts, potentially resulting in us bypassing the local minima. In contrast, if the learning rate is too small, it will take a long time to reach the local minima. 
 > There are several ways to tune this important hyperparameter.
@@ -78,10 +73,8 @@ on that pixel so that our model will churn out a higher probability (that the nu
 
 Eventually, after multiple rounds of iteration, we will reach the local minima of the loss function. At this point, our gradient is zero and any further adjustments to the weight will increase loss.
 
-<figure>
-<center><img src="https://user-images.githubusercontent.com/40440105/131346106-76ac6136-b68d-49be-b688-0a00f20fa158.png" width=40%></center>
-<figcaption align = "center"><em>Source: fast.ai</em></figcaption>
-</figure>
+<img width="40%" alt="gd2" src="https://user-images.githubusercontent.com/40440105/131346913-c43a5d47-42c7-4519-9895-882e436ff595.png">
+<center><em>Source: fast.ai</em></center>
 
 We repeat this process for every weight (all 10,000 of them!).
 
@@ -89,11 +82,8 @@ A common analogy for gradient descent is that of a blindfolded hiker who is stuc
 Thus, he feels the ground around him and takes a small step in the steepest downward direction. This is one iteration. By taking many of these small steps, he will
 eventually reach the bottom of a valley (local minima).
 
-
-<figure>
-<center><img src="https://user-images.githubusercontent.com/40440105/131346134-1f272888-a46b-4935-b2c1-3889ebeda09e.png" width=40%></center>
-<figcaption align = "center"><em>The beautiful Isle of Skye (source: inspiredbymaps)</em></figcaption>
-</figure>
+<img width="40%" alt="skye" src="https://user-images.githubusercontent.com/40440105/131346963-4006c387-4d78-4d51-ba93-08d21c03615c.png">
+<center><em>Source: inspiredbymaps</em></center>
 
 > Tip: Note that gradient descent requires our loss function to be continuous and smooth. 
 > What if our loss function is discontinuous - say, a step function?
@@ -103,20 +93,19 @@ eventually reach the bottom of a valley (local minima).
 > a weight by a tiny amount, we do not expect any prediction to change from a 3 to 7 (or vice versa). As such, accuracy remains unchanged.
 > A much larger adjustment in a weight is needed to induce a change in our predictions.
 > Consequently, we use a continuous loss function which improves when we make correct predictions with slightly more confidence, or make wrong predictions with slightly less confidence.
-> <figure>
-<img src="https://user-images.githubusercontent.com/40440105/131346231-7fa61d58-f0c9-43af-8639-378047baef32.png" width=40%>
-<figcaption align = "center"><em>Source: Desmos</em></figcaption>
-</figure>
+> 
+> <img width="362" alt="desmos_step" src="https://user-images.githubusercontent.com/40440105/131347027-3e85cdf4-4d61-440f-a312-dd44d18e1051.png">
+> 
+> <center><em>Source: Desmos</em></center>
+
 
 ## What are the limitations of gradient descent?
 
 There are two key limitations behind standard gradient descent (or batch gradient descent):
 - Firstly, it is possible that we can get stuck in a local minima of the loss function, preventing us from accessing the better global minima. Consider the illustration below. We start at point U and adjust iteratively until we hit the local minima and the GD algorithm terminates.
 
-<figure>
-<img src="https://user-images.githubusercontent.com/40440105/131346184-1343ade2-feba-4d7a-ad1f-b54405a62918.png" width=40%>
-<figcaption align = "center"><em>Source: Analytics Vidhya</em></figcaption>
-</figure>
+<img width="360" alt="minima2" src="https://user-images.githubusercontent.com/40440105/131347079-b0cb5ead-d0f6-4d37-822c-bdc5a7564d14.png">
+<center><em>Source: Analytics Vidhya</em></center>
 
 - Secondly, in standard gradient descent, we use every single datapoint in our training set to compute gradients. Let's say we have 5,000 training images. For a given parameter, we use all 5,000 images to calculate individual losses and take the mean. After that, we adjust the parameter value slightly and re-calculate the loss for all 5,000 images (taking the mean again). The difference in means divided by the difference in weight is the gradient. When the training set is large, this process becomes computationally intensive.
 
