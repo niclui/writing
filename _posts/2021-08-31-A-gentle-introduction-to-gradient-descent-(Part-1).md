@@ -4,7 +4,8 @@ description: What is gradient descent and why is it important?
 toc: true
 comments: true
 layout: post
-categories: [actions, markdown]
+categories: [gradient descent, deep learning]
+image: images/skye.png
 author: Nicholas
 ---
 
@@ -153,3 +154,5 @@ I hope this article has given you a good overview of the key concepts in gradien
 - Stochastic and mini-batch gradient descent are popular alternatives that mitigate some of these issues.
 
 Hope you enjoyed reading! In the next blogpost, we will be fleshing out these high-level concepts in actual code - see you then!
+
+(Cover picture credit: inspiredbymaps)
