@@ -119,6 +119,8 @@ window.onload = wrap_img;
     <ul class="section-nav">
 <li class="toc-entry toc-h1"><a href="#gradient-descent">Gradient descent</a>
 <ul>
+<li class="toc-entry toc-h2"><a href="#background">Background</a></li>
+<li class="toc-entry toc-h2"><a href="#how-does-gradient-descent-work">How does gradient descent work?</a></li>
 <li class="toc-entry toc-h2"><a href="#what-are-the-limitations-of-gradient-descent">What are the limitations of gradient descent?</a></li>
 </ul>
 </li>
@@ -134,6 +136,8 @@ In the next blogpost, we will be fleshing out these ideas in actual code and wit
 
 <h1 id="gradient-descent">
 <a class="anchor" href="#gradient-descent" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradient descent</h1>
+<h2 id="background">
+<a class="anchor" href="#background" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background</h2>
 <p>Recall the process of training a machine learning model. The steps broadly involve:</p>
 <ul>
   <li>Initializing a bunch of parameters</li>
@@ -151,6 +155,8 @@ We are training our model on a large dataset of handwritten 3s and 7s - for simp
 <figcaption align="center"><em>Source: 1001 Free Downloads</em></figcaption>
 </figure>
 
+<h2 id="how-does-gradient-descent-work">
+<a class="anchor" href="#how-does-gradient-descent-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does gradient descent work?</h2>
 <p><strong>Step 1: Initializing a bunch of parameters</strong></p>
 
 <p>In this case, our parameters can be the weights attached to every individual pixel of a picture. So for a 100x100 image, we will have a set of 10,000 weights.
