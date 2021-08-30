@@ -30,12 +30,11 @@ We are training our model on a large dataset of handwritten 3s and 7s - for simp
 ## How does gradient descent work?
 **Step 1: Initializing a bunch of parameters**
 
-In this case, our parameters can be the weights attached to every individual pixel of a picture. So for a 100x100 image, we will have a set of 10,000 weights.
-Let's say our GD algorithm starts off by assigning the same weight to every pixel.
+Our parameters can be the weights attached to every feature of the picture (lets say that we have 100 features). We start off by assigning a random weight to each feature.
 
 **Step 2: Using those parameters to make predictions from your input**
 
-We can multiply the value of every pixel (between 0 and 255) with its weight. After that, get the average weighted value across all pixels.
+We can multiply the value of every feature with its weight. After that, get the average weighted value across all features.
 Following which, pass that value into a special function (e.g. Sigmoid function) to generate a probability between 0 and 1.
 If that probability is >0.5, predict a 3. If not, predict a 7.
 
@@ -43,12 +42,10 @@ If that probability is >0.5, predict a 3. If not, predict a 7.
 
 The magic of gradient descent happens here. Intuitively, we want to update our parameters in a way that will make our predictions better.
 
-Let's imagine that we are updating the weight attached to the pixel in column n and row m. We plot this weight on the x-axis.
+Let's imagine that we are updating the weight of feature m. We plot this weight on the x-axis.
 On the y-axis, we will plot the **loss function** with respect to that weight. What is the loss function?
 Essentially, it is a function that will return a small value when your model is good, and a large value when your model is bad.
-For instance, we can think of a function that will return our model's probability (that the number is 3) when the true label is "7" and 1 - our model's probability when the true
-label is "3". This means that the loss function will give us a small value when we are making a correct prediction with high confidence, a medium value when we are
-making a correct prediction with poor confidence, and a large value when we are making a wrong prediction.
+An example of a loss function is <a href="https://www.analyticsvidhya.com/blog/2021/03/binary-cross-entropy-log-loss-for-binary-classification/">binary cross entropy</a>. This loss function will give us a small value when we are making a correct prediction with high confidence, a medium value when we are making a correct prediction with poor confidence, and a large value when we are making a wrong prediction.
 
 Gradient descent involves us taking iterative steps to find the local minima of the loss function (with respect to the parameter we are adjusting).
 Consider the case of a convex loss function (see picture below). Let's say that we initialize our weight at a value of 1. The GD algorithm will calculate the gradient at that point.
@@ -56,14 +53,12 @@ To calculate the gradient, we can adjust the weight by a tiny margin (holding ot
 By dividing the change in loss by the change in weight, we get the gradient.
 
 The algorithm will then increase/decrease the value of x by the value of the gradient multiplied by a specified learning rate. Since the gradient is negative (i.e. we will
-reduce our loss by increasing our weight), the algorithm will increase the weight by the value of gradient * the learning rate. This is likely the case if the pixel in question is
-in the bottom right hand corner of the picture. We expect this pixel to be "activated" for the number 3, but not for the number "7". Thus, we place a higher weight
-on that pixel so that our model will churn out a higher probability (that the number is 3) everytime that pixel is dark.
+reduce our loss by increasing our weight), the algorithm will increase the weight by the value of gradient * the learning rate.
 
 <img width="40%" alt="gd1" src="https://user-images.githubusercontent.com/40440105/131346851-985a63e7-0013-4f05-9ea5-a89d31d74c2d.png">
 <center><em>Source: fast.ai</em></center>
 
-> Tip: The learning rate controls the rate at which the model adjusts its parameters. Selecting the optimal learning rate is tricky. If we select an overly large rate, the model will adjust the parameters by huge amounts, potentially resulting in us bypassing the local minima. In contrast, if the learning rate is too small, it will take a long time to reach the local minima. 
+> Tip: The learning rate controls the rate at which the model adjusts its parameters. Selecting the optimal learning rate is tricky. If we select an overly large rate, the model will adjust the parameters by huge amounts, potentially resulting in us bypassing the local minima. In contrast, if the learning rate is too small, it will take a long time to reach the local minima.
 > There are several ways to tune this important hyperparameter.
 > For instance, you could do learning rate annealing. Start off with a high learning rate so that you can quickly descend to an acceptable set of parameter values.
 > After that, decrease your learning rate so that you can precisely locate the optimal value within the acceptable range.
@@ -76,7 +71,7 @@ Eventually, after multiple rounds of iteration, we will reach the local minima o
 <img width="40%" alt="gd2" src="https://user-images.githubusercontent.com/40440105/131346913-c43a5d47-42c7-4519-9895-882e436ff595.png">
 <center><em>Source: fast.ai</em></center>
 
-We repeat this process for every weight (all 10,000 of them!).
+We repeat this process for every weight (all 100 of them!).
 
 A common analogy for gradient descent is that of a blindfolded hiker who is stuck on the side of a hill. He wants to get to as low a point as possible.
 Thus, he feels the ground around him and takes a small step in the steepest downward direction. This is one iteration. By taking many of these small steps, he will
