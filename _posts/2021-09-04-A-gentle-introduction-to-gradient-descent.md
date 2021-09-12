@@ -1,5 +1,5 @@
 ---
-title: A gentle introduction to gradient descent (Part 1)
+title: A gentle introduction to gradient descent
 description: An intuitive overview of key concepts in gradient descent.
 toc: true
 comments: true
@@ -10,7 +10,6 @@ author: Nicholas
 ---
 
 Gradient descent is one of the key foundations of machine learning. Today, I hope to give a high-level and intuitive overview of this concept.
-In the next blogpost, we will be fleshing out these ideas in actual code and with the <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST dataset</a>.
 
 # Gradient descent
 ## Background
@@ -139,6 +138,6 @@ I hope this article has given you a good overview of the key concepts in gradien
 - The two biggest limitations of standard gradient descent are 1) the possibility that we may be trapped in the local minima of our loss function, and 2) the computational cost.
 - Stochastic and mini-batch gradient descent are popular alternatives that mitigate some of these issues.
 
-Hope you enjoyed reading! In the next blogpost, we will be fleshing out these high-level concepts in actual code - see you then!
+Hope you enjoyed reading!
 
 (Cover picture credit: inspiredbymaps)
