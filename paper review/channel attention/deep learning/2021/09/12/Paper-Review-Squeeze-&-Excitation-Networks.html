@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Paper Review - Squeeze &amp; Excitation Networks | An adventure into AI</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Paper Review - Squeeze &amp; Excitation Networks" />
+<meta name="author" content="Nicholas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A review of Hu et al (2017)’s seminal paper on squeeze &amp; excitation networks (SENets). SENets allow us to model channel interdependencies, producing significant improvements in performance at small computational cost." />
+<meta property="og:description" content="A review of Hu et al (2017)’s seminal paper on squeeze &amp; excitation networks (SENets). SENets allow us to model channel interdependencies, producing significant improvements in performance at small computational cost." />
+<link rel="canonical" href="https://niclui.github.io/writing/paper%20review/channel%20attention/deep%20learning/2021/09/12/Paper-Review-Squeeze-&-Excitation-Networks.html" />
+<meta property="og:url" content="https://niclui.github.io/writing/paper%20review/channel%20attention/deep%20learning/2021/09/12/Paper-Review-Squeeze-&-Excitation-Networks.html" />
+<meta property="og:site_name" content="An adventure into AI" />
+<meta property="og:image" content="https://niclui.github.io/writing/images/SED.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-09-12T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://niclui.github.io/writing/paper%20review/channel%20attention/deep%20learning/2021/09/12/Paper-Review-Squeeze-&-Excitation-Networks.html","@type":"BlogPosting","headline":"Paper Review - Squeeze &amp; Excitation Networks","dateModified":"2021-09-12T00:00:00-05:00","datePublished":"2021-09-12T00:00:00-05:00","image":"https://niclui.github.io/writing/images/SED.png","author":{"@type":"Person","name":"Nicholas"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/paper%20review/channel%20attention/deep%20learning/2021/09/12/Paper-Review-Squeeze-&-Excitation-Networks.html"},"description":"A review of Hu et al (2017)’s seminal paper on squeeze &amp; excitation networks (SENets). SENets allow us to model channel interdependencies, producing significant improvements in performance at small computational cost.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/writing/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://niclui.github.io/writing/feed.xml" title="An adventure into AI" /><link rel="shortcut icon" type="image/x-icon" href="/writing/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/writing/">An adventure into AI</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/writing/about/">About Me</a><a class="page-link" href="/writing/">Home</a><a class="page-link" href="/writing/search/">Search</a><a class="page-link" href="/writing/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Paper Review - Squeeze &amp; Excitation Networks</h1><p class="page-description">A review of Hu et al (2017)'s seminal paper on squeeze & excitation networks (SENets). SENets allow us to model channel interdependencies, producing significant improvements in performance at small computational cost.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-09-12T00:00:00-05:00" itemprop="datePublished">
+        Sep 12, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Nicholas</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      9 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/writing/categories/#paper review">paper review</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/writing/categories/#channel attention">channel attention</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/writing/categories/#deep learning">deep learning</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#recap-of-cnns">Recap of CNNs</a></li>
+<li class="toc-entry toc-h2"><a href="#motivation-for-sens">Motivation for SENs</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#squeeze--excitement-networks">Squeeze &amp; Excitement Networks</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#stage-1-squeeze-module">Stage 1: Squeeze Module</a></li>
+<li class="toc-entry toc-h2"><a href="#stage-2-excite-module">Stage 2: Excite Module</a></li>
+<li class="toc-entry toc-h2"><a href="#stage-3-scale-module">Stage 3: Scale Module</a></li>
+<li class="toc-entry toc-h2"><a href="#where-do-we-fit-the-squeeze-and-excitation-block">Where do we fit the squeeze-and-excitation block?</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#choice-of-architecture">Choice of Architecture</a></li>
+<li class="toc-entry toc-h1"><a href="#overall-evaluation">Overall Evaluation</a></li>
+</ul><p>A review of Hu et al (2017)’s paper on <a href="https://arxiv.org/pdf/1709.01507.pdf">squeeze and excitation networks</a>.</p>
+
+<p><em>Note: This blogpost assumes that the reader has a working understanding of convolutional neural networks (CNNs).
+For a good introduction to CNNs, please see this
+<a href="https://towardsdatascience.com/simple-introduction-to-convolutional-neural-networks-cdf8d3077bac">article</a>.</em></p>
+
+<h1 id="introduction">
+<a class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
+
+<h2 id="recap-of-cnns">
+<a class="anchor" href="#recap-of-cnns" aria-hidden="true"><span class="octicon octicon-link"></span></a>Recap of CNNs</h2>
+
+<p>Convolutional neural networks (CNNs) are extremely useful for wide range of visual tasks (e.g. image classification).
+Here is a quick recap of how CNNs work:</p>
+<ul>
+  <li>First, we pass in an image of dimensions HxWxC, where H is height, W is width, and C is the number of input channels.
+For a colored image, C is usually 3 (corresponding to values for RGB). For a grayscale image, C would be 1.</li>
+  <li>The image is then passed into a <strong>convolutional layer</strong> which applies a variety of filters onto the image.
+These filter kernels convolve (slide) across the image, generating feature values for different parts of the image.
+Each filter kernel will generate a <strong>feature map</strong>, which is a matrix of feature values for different parts of the image.
+After applying multiple filter kernels, we will be left with <strong>a set of feature maps, U</strong>. U has dimensions H’XW’XC’.
+The height and width of U depends on many factors (e.g. the stride of the filter kernels, or whether we have padded the image).
+If we use a stride of 1 and pad the image with zeroes all around, our H’ and W’ will be equivalent to H and W respectively.
+<strong>C’ is the number of filter kernels we applied.</strong> It is also the <strong>number of output channels</strong> that we are left with.
+Here is a fantastic visualisation of the process.</li>
+  <li>Our set of feature maps, U, is then passed into a non-linear activation function (e.g. ReLU). This allows us to introduce non-linearity
+into the model, allowing us to capture more complex relationships. Importantly, we also need this non-linear function to decouple
+our linear layers. Intuitively, a series of linear layers is equivalent to just one linear layer. To decouple the linear layers from
+one another, we insert a non-linear function in between them.</li>
+  <li>After we have passed our feature maps, U, into the non-linear function, we pass them into a pooling layer.
+The purpose of a pooling layer is to downsample the feature maps to reduce the computational load.
+One example of a pooling function is max pooling, in which we convolve a NXN grid across the feature maps. We then
+keep only the largest feature value inside the grid. Consequently, we are left with much smaller feature maps,
+while still retaining information about the “anomalies” (e.g. parts of the image with noticeable edges).</li>
+  <li>We go through multiple rounds of convolutional layer &gt; non-linear function &gt; pooling layer.
+The earlier convolutional layers will capture more general patterns and relationships (e.g. edge detection).
+In contrast, the later convolutional layers will capture patterns that are much more class-specific (e.g. whether the animal in the picture
+has whiskers). Note that the number of output channels will grow as we go deeper into the CNN (since a feature map is passed into the next
+convolutional layer and spits out multiple new feature maps).</li>
+  <li>Finally, we pass our set of feature maps into a fully-connected layer and a final activation function to churn out a final prediction.</li>
+</ul>
+
+<h2 id="motivation-for-sens">
+<a class="anchor" href="#motivation-for-sens" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation for SENs</h2>
+
+<p>So what exactly is sub-optimal about standard CNNs? Intuitively, there are more important feature maps and less important feature maps.
+When classifying a shape, the feature map contatining information about edges may be more important than the one containing
+information about background color. Thus, we will want our model to prioritize these more important feature maps, and deprioritize the less important ones.
+In technical terms, we want “channel attention” - we want to give greater “attention” to the more important “channels” (aka feature maps).
+Standard CNNs are unable to do this. Here is where squeeze and excitation networks come in.</p>
+
+<h1 id="squeeze--excitement-networks">
+<a class="anchor" href="#squeeze--excitement-networks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Squeeze &amp; Excitement Networks</h1>
+
+<p>The seminal paper by Hu et al (2017) propose a novel neural network architecture called squeeze-and-excitement blocks.
+Squeeze-and-excitement blocks allow us to model inter-dependencies between channels, and to identify which channels are more important than others.
+There are three stages:</p>
+
+<h2 id="stage-1-squeeze-module">
+<a class="anchor" href="#stage-1-squeeze-module" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stage 1: Squeeze Module</h2>
+<p>We have our set of feature maps, U, which is a tensor with dimensions H’XW’XC’. We want to model the interdependencies between
+the different channels/feature maps. The problem is that each channel operates within a local receptive field.
+In other words, each element of a given feature map corresponds with only a specific part of the image.
+This is problematic as we will want to use global spatial information when computing channel interdependencies -
+if not, we will not be able to identify the interdependence between say, the value of channel 1 in the top right hand pixel, and that of channel 2 in the bottom left hand pixel.</p>
+
+<p>A simple approach would be to simply use every single feature value in U. While this may improve model performance, it is extremely computationally intensive (we need to work with H’XW’XC’ values and C’ blows up as we go deeper into the neural network).</p>
+
+<p>To mitigate this trade-off, the authors choose to generate channel-wise statistics. We can use average pooling to generate a single value for
+each channel. In average pooling, we simply take the average value in a given feature map. This allows us to generate
+a channel descriptor matrix of dimensions 1X1XC’. Each channel will be compressed into a single value.
+We have thus squeezed our set of feature maps into a compact channel descriptor matrix that contains global spatial information.</p>
+
+<h2 id="stage-2-excite-module">
+<a class="anchor" href="#stage-2-excite-module" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stage 2: Excite Module</h2>
+<p>In this stage, we want to make use of the channel-wise information aggregated in the channel descriptor
+in order to calculate the scaling weights for different channels (higher scaling weight = more important).
+The authors opt for a fully connected multi-layer perceptron (MLP) bottleneck structure to map the scaling weights.
+A bottleneck structure works as follows:</p>
+<ul>
+  <li>We pass in our tensor of 1X1XC’.</li>
+  <li>The input layer has C’ neurons.</li>
+  <li>The hidden layer has C’/r neurons. Our input space is thus reduced by a factor of r. This hidden layer also introduces non-linearity with a ReLU function.</li>
+  <li>The output layer has C’ neurons. The compressed space is then expanded back to its original dimensionality.
+We get back an “excited” output tensor with the same dimensions as the input tensor (1XCXC’).</li>
+</ul>
+
+<p>To maximize our cross-channel interactions, we should set r to be 1. If r &gt; 1, we lose neurons in the hidden layer (and thus lose out on the granularity of
+our cross-channel interactions). However, a smaller r also means greater computational complexity (as we have a greater number of parameters to optimize).
+The default value of the reduction ratio, r, is 16.</p>
+
+<h2 id="stage-3-scale-module">
+<a class="anchor" href="#stage-3-scale-module" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stage 3: Scale Module</h2>
+<p>The excited weights tensor is then passed into a Sigmoid activation layer to scale the values to a range of 0-1.
+Subsequently, by broadcasting, multiply the weights tensor with the original set of feature maps to obtain the scaled set of feature maps.
+Each channel is now scaled by the weight that was learned from the MLP in stage 2.</p>
+
+<h2 id="where-do-we-fit-the-squeeze-and-excitation-block">
+<a class="anchor" href="#where-do-we-fit-the-squeeze-and-excitation-block" aria-hidden="true"><span class="octicon octicon-link"></span></a>Where do we fit the squeeze-and-excitation block?</h2>
+<p>In standard architectures, the SE block can be inserted after the non-linearity following each convolution.</p>
+
+<p>In summary, we pass in an image of HXWXC dimensions into the convolutional layer. The convolutional layer spits out
+a tensor of H’XW’XC’, which we pass into a non-linearity. After that, we pass the tensor into
+a squeeze module which squeezes the tensor into a 1X1XC’ tensor.
+This 1X1XC’ tensor is passed into the excite module and returns a 1X1XC’ “excited” output tensor.
+The excited output tensor is passed into a Sigmoid function to generate a scaled set of weights.
+We then multiply these learnt weights with the set of feature maps to scale them.</p>
+
+<h1 id="choice-of-architecture">
+<a class="anchor" href="#choice-of-architecture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Choice of Architecture</h1>
+
+<p>In this section, we will evaluate the authors’ architectural and hyperparameter choices.</p>
+
+<p><strong>1. Squeeze operator:</strong>
+The authors chose to use global average pooling as the squeeze operator, instead of global max pooling.
+The former takes the average value in a defined window (in our example, we take the average value across the entire feature map),
+while the latter takes the maximum value in a defined window.</p>
+
+<p>Max pooling allows us to preserve the most activating pixels in an image (since we preserve the highest value of the feature map).
+This is especially important for things like edge detection: edges will be captured in the anomalous values of the feature map.
+Max pooling allows us to preserve information about the edges of the object, while average pooling will lose out on the information.
+However, it can be extremely noisy (similiar images may have very different maximum values). It also ignores the effect of neighboring pixels.</p>
+
+<p>Average pooling allows us to construct a smooth average of values in a feature map. It is less noisy (similiar images won’t differ by large amounts)
+and takes into account neighboring pixels. The downside is that we lose information about the most activating pixels.</p>
+
+<p>The authors eventually settled on average pooling as an ablation study showed that global average pooling produced a smaller error rate.</p>
+
+<p>However, more recent innovations have tried to combine different methods of pooling to obtain better results.
+In <a href="https://openaccess.thecvf.com/content_ECCV_2018/papers/Sanghyun_Woo_Convolutional_Block_Attention_ECCV_2018_paper.pdf">
+      Convolutional Block Attention Module (CBAM)</a>, 
+the input tensor is decomposed into two C’X1X1 vectors - one is generated by global average pooling, while the other is generated by global max pooling.
+Global average pooling preserves aggregate spatial information, while global max pooling preserves the most activating pixels.</p>
+
+<p><strong>2. Reduction ratio, r:</strong>
+The smaller the value of r, the more neurons we retain in the bottleneck. This allows us to capture more granular cross-channel
+interactions, improving the model performance. However, it also means that we have a greater number of parameters to train, increasing computational complexity.
+However, the authors find that when r decreases, performance does not increase monotonically (i.e. it may be plateauing or even decreasing at some points).
+They find that r = 16 provides a good balance between accuracy and complexity.</p>
+
+<p>However, note that it may not be optimal to maintain the same value of r throughout the network.
+For instance, earlier convolutional layers</p>
+
+<p><strong>3. Excitation Operator</strong>
+An ablation study shows that Sigmoid is the best excitation operator. Other options (tanh, ReLU) significantly decreases performance.</p>
+
+<h1 id="overall-evaluation">
+<a class="anchor" href="#overall-evaluation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overall Evaluation</h1>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="nicholaslui97/writing"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/writing/paper%20review/channel%20attention/deep%20learning/2021/09/12/Paper-Review-Squeeze-&-Excitation-Networks.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/writing/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/writing/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/writing/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://www.linkedin.com/in/nicholas-lui" title="nicholas-lui"><svg class="svg-icon grey"><use xlink:href="/writing/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
