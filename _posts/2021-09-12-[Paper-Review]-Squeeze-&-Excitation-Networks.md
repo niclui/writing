@@ -5,7 +5,7 @@ toc: true
 comments: true
 layout: post
 categories: [paper review, channel attention, deep learning]
-image: images/SED.png
+image: images/SEB.png
 author: Nicholas
 ---
 
@@ -97,13 +97,19 @@ Each channel is now scaled by the weight that was learned from the MLP in stage 
 
 ## Where do we fit the squeeze-and-excitation block?
 In standard architectures, the SE block can be inserted after the non-linearity following each convolution.
+Its "plug and play" insertion makes it viable for a wide range of network architectures.
 
-In summary, we pass in an image of HXWXC dimensions into the convolutional layer. The convolutional layer spits out
-a tensor of H'XW'XC', which we pass into a non-linearity. After that, we pass the tensor into
+In summary, we pass in an image (X) of HXWXC dimensions into the convolutional layer. The convolutional layer spits out
+a tensor of H'XW'XC', which we pass into a non-linearity. After that, we pass the tensor (U) into
 a squeeze module which squeezes the tensor into a 1X1XC' tensor.
 This 1X1XC' tensor is passed into the excite module and returns a 1X1XC' "excited" output tensor.
 The excited output tensor is passed into a Sigmoid function to generate a scaled set of weights.
 We then multiply these learnt weights with the set of feature maps to scale them.
+
+The overall architecture can be seen below.
+
+<img width="80%" alt="SEB" src="https://user-images.githubusercontent.com/40440105/133029472-77ce4f65-32c6-4839-b2c9-408452cf938f.png">
+<center><em>Source: Hu et al (2017)</em></center>
 
 # Choice of Architecture
 
@@ -114,13 +120,12 @@ The authors chose to use global average pooling as the squeeze operator, instead
 The former takes the average value in a defined window (in our example, we take the average value across the entire feature map),
 while the latter takes the maximum value in a defined window.
 
-Max pooling allows us to preserve the most activating pixels in an image (since we preserve the highest value of the feature map).
-This is especially important for things like edge detection: edges will be captured in the anomalous values of the feature map.
-Max pooling allows us to preserve information about the edges of the object, while average pooling will lose out on the information.
-However, it can be extremely noisy (similiar images may have very different maximum values). It also ignores the effect of neighboring pixels.
+Max pooling allows us to preserve the most activated pixels in an image (since we preserve the highest value of the feature map).
+These pixels tend to be the most important or class-deterministic pixels. However, it can be extremely noisy (similiar images may have very different maximum values). It also ignores the effect of neighboring pixels.
 
 Average pooling allows us to construct a smooth average of values in a feature map. It is less noisy (similiar images won't differ by large amounts)
-and takes into account neighboring pixels. The downside is that we lose information about the most activating pixels.
+and takes into account neighboring pixels. The downside is that we lose information about the most activating pixels. Average pooling
+does not discriminate between important/class-deterministic pixels and pixels which do not contain useful information. Instead, it aggregates all these pixels together - we capture aggregate spatial information, but do not preserve information on the most important pixels.
 
 The authors eventually settled on average pooling as an ablation study showed that global average pooling produced a smaller error rate.
 
@@ -144,3 +149,10 @@ An ablation study shows that Sigmoid is the best excitation operator. Other opti
 
 
 # Overall Evaluation
+By modelling channel interdependencies, SENets produce a huge improvement in model performance at slight computational cost.
+However, it still faces a few limitations:
+- To reduce computational complexity, we used a bottleneck MLP in our excitation module. This causes information loss.
+- SENets use Global Average Pooling (GAP) to squeeze the set of feature maps into a channel descriptor matrix. While GAP can aggregate spatial information, it does not preserve the most activated pixels. There have been new alternatives, such as CBAM (see above), which help to rectify this problem.
+- SENets add a large amount of parameters (~3m more parameters in a SENet vs ResNet-50). The computational cost is still manageable. However, there have been newer approaches which provide as good a performance at SENets (if not better) at lower computational cost. One example is <a href="https://github.com/BangguWu/ECANet">ECANet</a>, which show that "avoiding dimensionality reduction is important for learning channel attention, and appropriate cross-channel interaction can preserve performance while significantly decreasing model complexity."
+
+(Cover picture: Hu et al (2017))
