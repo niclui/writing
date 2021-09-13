@@ -1,6 +1,7 @@
 ---
-title: [Paper Review] Squeeze & Excitation Networks
-description: A review of Hu et al (2017)'s seminal paper on squeeze & excitation networks (SENets). SENets allow us to model channel interdependencies, producing a significant improvement in model performance.
+title: Paper Review: Squeeze & Excitation Networks
+description: A review of Hu et al (2017)'s seminal paper on squeeze & excitation networks (SENets). SENets allow us to model channel interdependencies, producing significant
+improvements in performances at small computational cost.
 toc: true
 comments: true
 layout: post
