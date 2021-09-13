@@ -30,7 +30,7 @@ After applying multiple filter kernels, we will be left with **a set of feature 
 The height and width of U depends on many factors (e.g. the stride of the filter kernels, or whether we have padded the image).
 If we use a stride of 1 and pad the image with zeroes all around, our H' and W' will be equivalent to H and W respectively.
 **C' is the number of filter kernels we applied.** It is also the **number of output channels** that we are left with.
-Here is a fantastic visualisation of the process.
+Here is a <a href="https://medium.com/impactai/cnns-from-different-viewpoints-fab7f52d159c">fantastic</a> visualisation of the process.
 - Our set of feature maps, U, is then passed into a non-linear activation function (e.g. ReLU). This allows us to introduce non-linearity
 into the model, allowing us to capture more complex relationships. Importantly, we also need this non-linear function to decouple
 our linear layers. Intuitively, a series of linear layers is equivalent to just one linear layer. To decouple the linear layers from
@@ -142,7 +142,7 @@ However, the authors find that when r decreases, performance does not increase m
 They find that r = 16 provides a good balance between accuracy and complexity.
 
 However, note that it may not be optimal to maintain the same value of r throughout the network.
-For instance, earlier convolutional layers 
+For instance, there may be more complex channel interdependencies at later layers. We might want to use a lower value of r there to capture the more complex relationships. 
 
 **3. Excitation Operator**
 An ablation study shows that Sigmoid is the best excitation operator. Other options (tanh, ReLU) significantly decreases performance.
