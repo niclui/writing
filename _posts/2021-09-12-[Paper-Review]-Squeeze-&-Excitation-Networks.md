@@ -1,12 +1,12 @@
 ---
-title: Paper Review: Squeeze & Excitation Networks
+title: Paper Review - Squeeze & Excitation Networks
 description: A review of Hu et al (2017)'s seminal paper on squeeze & excitation networks (SENets). SENets allow us to model channel interdependencies, producing significant
 improvements in performances at small computational cost.
 toc: true
 comments: true
 layout: post
-categories: [gradient descent, deep learning]
-image: images/skye.png
+categories: [paper, channel attention, deep learning]
+image: images/SED.png
 author: Nicholas
 ---
 
@@ -62,14 +62,17 @@ There are three stages:
 
 ## Stage 1: Squeeze Module
 We have our set of feature maps, U, which is a tensor with dimensions H'XW'XC'. We want to model the interdependencies between
-the different channels/feature maps. To fully capture the interdependencies between different channels, we should ideally include
-every single value from the different channels. However, this means that we will have H'XW'XC' values to work with. This is 
-computationally difficult, especially since the number of channels rapidly increase as we go deeper into the CNN.
+the different channels/feature maps. The problem is that each channel operates within a local receptive field.
+In other words, each element of a given feature map corresponds with only a specific part of the image.
+This is problematic as we will want to use global spatial information when computing channel interdependencies -
+if not, we will not be able to identify the interdependence between say, the value of channel 1 in the top right hand pixel, and that of channel 2 in the bottom left hand pixel.
 
-To mitigate this trade-off, we generate channel-wise statistics. We can use average pooling to generate a single value for
+A simple approach would be to simply use every single feature value in U. While this may improve model performance, it is extremely computationally intensive (we need to work with H'XW'XC' values and C' blows up as we go deeper into the neural network).
+
+To mitigate this trade-off, the authors choose to generate channel-wise statistics. We can use average pooling to generate a single value for
 each channel. In average pooling, we simply take the average value in a given feature map. This allows us to generate
 a channel descriptor matrix of dimensions 1X1XC'. Each channel will be compressed into a single value.
-We have thus squeezed our set of feature maps into a more compact channel descriptor matrix.
+We have thus squeezed our set of feature maps into a compact channel descriptor matrix that contains global spatial information.
 
 ## Stage 2: Excite Module
 In this stage, we want to make use of the channel-wise information aggregated in the channel descriptor
@@ -93,6 +96,13 @@ Each channel is now scaled by the weight that was learned from the MLP in stage 
 
 ## Where do we fit the squeeze-and-excitation block?
 In standard architectures, the SE block can be inserted after the non-linearity following each convolution.
+
+In summary, we pass in an image of HXWXC dimensions into the convolutional layer. The convolutional layer spits out
+a tensor of H'XW'XC', which we pass into a non-linearity. After that, we pass the tensor into
+a squeeze module which squeezes the tensor into a 1X1XC' tensor.
+This 1X1XC' tensor is passed into the excite module and returns a 1X1XC' "excited" output tensor.
+The excited output tensor is passed into a Sigmoid function to generate a scaled set of weights.
+We then multiply these learnt weights with the set of feature maps to scale them.
 
 # Choice of Architecture
 
@@ -126,10 +136,10 @@ However, the authors find that when r decreases, performance does not increase m
 They find that r = 16 provides a good balance between accuracy and complexity.
 
 However, note that it may not be optimal to maintain the same value of r throughout the network.
+For instance, earlier convolutional layers 
 
 **3. Excitation Operator**
 An ablation study shows that Sigmoid is the best excitation operator. Other options (tanh, ReLU) significantly decreases performance.
 
-**4. Point of Insertion of SE Block**
 
 # Overall Evaluation
