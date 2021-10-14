@@ -5,7 +5,7 @@ toc: true
 comments: true
 layout: post
 categories: [paper review, channel attention, deep learning]
-image: <img width="80%" alt="SEB" src="https://user-images.githubusercontent.com/40440105/133029472-77ce4f65-32c6-4839-b2c9-408452cf938f.png">
+image: images/SEB.png
 author: Nicholas
 ---
 
