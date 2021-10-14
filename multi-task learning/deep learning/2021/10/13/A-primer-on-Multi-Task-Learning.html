@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>A primer on multi-task learning | An adventure into AI</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="A primer on multi-task learning" />
+<meta name="author" content="Nicholas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In multi-task learning, we train a generalist model that is able to perform several different tasks. By exploiting similiarities between the different tasks, multi-task learning is able to achieve better performance than individual models for each task." />
+<meta property="og:description" content="In multi-task learning, we train a generalist model that is able to perform several different tasks. By exploiting similiarities between the different tasks, multi-task learning is able to achieve better performance than individual models for each task." />
+<link rel="canonical" href="https://niclui.github.io/writing/multi-task%20learning/deep%20learning/2021/10/13/A-primer-on-Multi-Task-Learning.html" />
+<meta property="og:url" content="https://niclui.github.io/writing/multi-task%20learning/deep%20learning/2021/10/13/A-primer-on-Multi-Task-Learning.html" />
+<meta property="og:site_name" content="An adventure into AI" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-10-13T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://niclui.github.io/writing/multi-task%20learning/deep%20learning/2021/10/13/A-primer-on-Multi-Task-Learning.html","@type":"BlogPosting","headline":"A primer on multi-task learning","dateModified":"2021-10-13T00:00:00-05:00","datePublished":"2021-10-13T00:00:00-05:00","author":{"@type":"Person","name":"Nicholas"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/multi-task%20learning/deep%20learning/2021/10/13/A-primer-on-Multi-Task-Learning.html"},"description":"In multi-task learning, we train a generalist model that is able to perform several different tasks. By exploiting similiarities between the different tasks, multi-task learning is able to achieve better performance than individual models for each task.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/writing/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://niclui.github.io/writing/feed.xml" title="An adventure into AI" /><link rel="shortcut icon" type="image/x-icon" href="/writing/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/writing/">An adventure into AI</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/writing/about/">About Me</a><a class="page-link" href="/writing/">Home</a><a class="page-link" href="/writing/search/">Search</a><a class="page-link" href="/writing/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">A primer on multi-task learning</h1><p class="page-description">In multi-task learning, we train a generalist model that is able to perform several different tasks. By exploiting similiarities between the different tasks, multi-task learning is able to achieve better performance than individual models for each task.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-10-13T00:00:00-05:00" itemprop="datePublished">
+        Oct 13, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Nicholas</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      9 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/writing/categories/#multi-task learning">multi-task learning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/writing/categories/#deep learning">deep learning</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#overview">Overview</a></li>
+<li class="toc-entry toc-h1"><a href="#parameter-sharing">Parameter Sharing</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#hard-parameter-sharing">Hard Parameter Sharing</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#method-1-multi-head-architecture">Method 1: Multi-head architecture</a></li>
+<li class="toc-entry toc-h3"><a href="#method-2-conditioning-on-task-descriptor-vector">Method 2: Conditioning on task descriptor vector</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#soft-parameter-sharing">Soft Parameter Sharing</a></li>
+<li class="toc-entry toc-h2"><a href="#hard-vs-soft-parameter-sharing">Hard vs Soft Parameter Sharing</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#why-mtl-works">Why MTL works</a></li>
+<li class="toc-entry toc-h1"><a href="#negative-transfer">Negative Transfer</a></li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+<li class="toc-entry toc-h1"><a href="#useful-resources">Useful Resources</a></li>
+</ul><p>Hi everyone! Today I would like to share about a new topic in ML that I have been exploring: multi-task learning (MTL). In MTL, we train a “generalist” model that is able to perform a variety of tasks. By exploiting similarities between the different tasks, we are able to achieve <strong>better performance more quickly</strong> for each individual task. Curious to see how this works? Let’s dive in!</p>
+
+<h1 id="overview">
+<a class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h1>
+<p>Let’s say that we need to perform 3 different tasks - detecting a dog, detecting a cat, and detecting a giraffe. The standard approach would be to train individual CNNs for each task. However, we may run into data limitations. Neural networks perform very well on large and diverse datasets. However, our dataset for each task may be small, leading to poor performance for each individual task. Intuitively, if our model has only a few dog pictures to learn from, it may not be able to differentiate between important dog-specific features and irrelevant features. This may lead to us over-fitting on irrelevant features, hurting the model’s generalizability.</p>
+
+<p>Multi-task learning is able to circumvent these limitations. Instead of having one model for each task, we build a “generalist” model that performs all three tasks simultaneously. This is because the different tasks share similarities. For instance, both dog and cat detection will require the model to identify the presence of fur. By exploiting similarities between the different tasks, we are able to achieve good performance even with limited datasets for each task. Let us first go through the technical details of how MTL exploits task similarities through parameter sharing. Afterwards, we will give an intuitive illustration of how this improves performance.</p>
+
+<h1 id="parameter-sharing">
+<a class="anchor" href="#parameter-sharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameter Sharing</h1>
+<p>There are two types of parameter sharing - hard parameter sharing (where every task shares a large number of common parameters) and soft parameter sharing (where we constrain the parameters of different tasks, ensuring that they are similar to each other). This encourages the model to learn a general representation across the different tasks, reducing the risk of us overfitting on any one task.</p>
+
+<h2 id="hard-parameter-sharing">
+<a class="anchor" href="#hard-parameter-sharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hard Parameter Sharing</h2>
+<p>We will explore the most basic ways to introduce hard parameter sharing, which is the most common approach in MTL.</p>
+
+<h3 id="method-1-multi-head-architecture">
+<a class="anchor" href="#method-1-multi-head-architecture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Method 1: Multi-head architecture</h3>
+<p>One simple way is to design an architecture where the hidden layers are shared among all the tasks. Only the output layer is task-specific and we have multiple heads corresponding to each task.</p>
+
+<p><img width="40%" alt="hard" src="https://user-images.githubusercontent.com/40440105/137263811-f9c8a679-4d2b-47d4-869f-aef1c156bc8b.png"></p>
+<center><em>Source: Ruder (2017)</em></center>
+
+<h3 id="method-2-conditioning-on-task-descriptor-vector">
+<a class="anchor" href="#method-2-conditioning-on-task-descriptor-vector" aria-hidden="true"><span class="octicon octicon-link"></span></a>Method 2: Conditioning on task descriptor vector</h3>
+<p>We can create a task descriptor vector, which contains information about the different tasks. For instance, we can create a one-hot vector of the task index. Task 1 will correspond to [1,0,0,…], task 2 will correspond to [0,1,0,…] and so on. By conditioning on this vector, we are able to control where and how we split the set of parameters into common parameters and task-specific ones.</p>
+
+<p>The simplest form of conditioning is concatenation-based. Consider the following CNN. In this set-up, the convolutional layers are shared among all the tasks.
+However, at the first fully connected layer, we can concatenate the input vector with the task index vector (denoted as z).</p>
+
+<p><img width="80%" alt="cnn" src="https://user-images.githubusercontent.com/40440105/137263748-066e1b44-7ec9-4b95-bcbf-baa1ac44002e.png"></p>
+<center><em>Source: Stanford CS330 Course</em></center>
+
+<p>In other words, we stack x on top of z. Correspondingly, we expand the weights matrix of the FC layer.</p>
+
+<p><img width="40%" alt="concat" src="https://user-images.githubusercontent.com/40440105/137263678-34eda649-50ee-4017-b471-afb28c9c7e5b.png"></p>
+<center><em>Source: Stanford CS330 Course</em></center>
+
+<p>This weights matrix will now contain both common parameters and task-specific ones. Parameters in columns 1 to D are shared across all tasks. In contrast, parameters in columns D+1 to T are task-specific. To see this, consider parameters in column D+1. These parameters will be multiplied with z1 in matrix multiplication. If z1 is one (i.e. task 1), these parameters will be “activated”. If z1 is zero (i.e. any task other than task 1), these parameters will be multiplied with a zero value. As such, parameters in column D+1 are specific to task 1. Column D+2 is specific to task 2, and so on and so forth.</p>
+
+<p><img width="80%" alt="concat" src="https://user-images.githubusercontent.com/40440105/137265201-eab44868-2235-4dca-83ad-de245c4e0e80.jpg"></p>
+<center><em>Source: Personal drawing</em></center>
+
+<p>Overall, we have a model that shares the hidden layers across the tasks. In the fully-connected layers, there is a mix of shared parameters and task-specific ones. By varying the location where we introduce the task index vector, we are able to control where the split of parameters happen.</p>
+
+<p>There are other options such as multiplicative-based conditioning. Instead of stacking x on top of z, we can use the product of x and z. This allows us to capture interaction effects - the weight applied to x differs based on the value of z. The choice of z is another important consideration. Instead of using a one-hot vector of the task index, we can consider choosing a descriptor vector that contains metadata of the different tasks. This will allow us to better exploit similarities between the different task structures.</p>
+
+<h2 id="soft-parameter-sharing">
+<a class="anchor" href="#soft-parameter-sharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Soft Parameter Sharing</h2>
+<p>In soft parameter sharing, each task has its own model with its own parameters. However, to encourage cross-learning between the different tasks, we impose regularization. The regularization penalty (e.g. L2 norm between the parameter vectors of different models) forces the parameters of the different tasks to be close to each other, ensuring that the model learns a more general representation across the different tasks.</p>
+
+<p><img width="80%" alt="cnn" src="https://user-images.githubusercontent.com/40440105/137263845-733fe448-f3fc-4c80-86e5-3b2b62e1c720.png"></p>
+<center><em>Source: Ruder (2017)</em></center>
+
+<h2 id="hard-vs-soft-parameter-sharing">
+<a class="anchor" href="#hard-vs-soft-parameter-sharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hard vs Soft Parameter Sharing</h2>
+<p>So which type of parameter sharing is better? It depends. Hard parameter sharing greatly reduces the risk of overfitting on a specific task. Intuitively, given that the different tasks share a significant % of the set of parameters, our model is more likely to find a representation that generalizes across all the tasks.</p>
+
+<p>The downside of hard parameter sharing is its lack of flexibility. We impose a large number of common parameters for the different tasks. This is potentially problematic - let’s say that we have a feature (e.g. presence of a snout) that is more useful for dog detection than giraffe detection. For the best results, we want to attach a heavier weight to this feature for dog detection (and a smaller weight for giraffe detection). However, in hard parameter sharing, we impose the same weight for all classes, affecting the model’s performance.</p>
+
+<p>Soft parameter sharing provides a compromise between this trade-off. It is slightly more prone to overfitting, but allows for greater flexibility in parameter choice.</p>
+<h1 id="why-mtl-works">
+<a class="anchor" href="#why-mtl-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why MTL works</h1>
+<p>MTL tries to exploit the similarities between different tasks. There are a few mechanisms through which this exploitation can improve model performance and reduce training time:</p>
+
+<p><strong>(I) Implicit data augmentation:</strong> MTL effectively allows us to expand our dataset for any given task. All tasks are somewhat noisy. For instance, the dataset for any given task is never perfect - it may contain a few wrong labels or low quality images. In MTL, we train on multiple tasks. Assuming that the noise patterns of different tasks are unrelated, we are able to average the noise patterns across a variety of tasks.</p>
+
+<p><strong>(II) Attention focusing:</strong> If we have an extremely noisy task (e.g. a large percentage of pictures are blurry), there is a high risk of overfitting on less important features. MTL can help the model focus its attention on more important features as other tasks will provide additional evidence for the relevance or irrelevance of those features.</p>
+
+<p><strong>(III) Eavesdropping:</strong> Some features G may be easy to learn for task B, while being difficult to learn for task A. This may be because A interacts with the features in a more complex or less clear way. Through MTL, we can allow the model to “eavesdrop” (i.e. learn G through task B).</p>
+
+<p>Consider the following two tasks: dog breed detection and giraffe breed detection. One feature that is useful for both tasks is the neck length (the neck length of dogs and giraffes vary across breeds). We will certainly learn this feature in the giraffe breed detection task given how prominent their necks are and the large variation across giraffe breeds. However, we are less likely to do so in the dog breed detection task as differences in neck length are less obvious. To circumvent this, we train the model on both tasks, increasing the probability that we capture this feature for dog breed detection too.</p>
+
+<p>There is a subtle difference between (II) and (III). We can think of (III) as being a more extreme version of (II). In (II), the single-task model can pick up important features but is not sure how important they are. In (III), the single-task model may miss out on these features entirely.</p>
+
+<p><strong>(IV) Representation bias:</strong> MTL prefers a generalized representation that extends across multiple tasks. This will allow us to learn new tasks more easily in the future (as long as those new tasks share commonalities with our existing set of tasks).</p>
+
+<h1 id="negative-transfer">
+<a class="anchor" href="#negative-transfer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Negative Transfer</h1>
+<p>Negative transfer occurs when training individual models on multiple tasks produces better performance than a single MTL model. There are two general cases when this arises:</p>
+
+<p>Firstly, if the tasks are unrelated to each other (e.g. dog detection vs text sentiment analysis). In which case, there are no similarities between the different tasks for MTL to exploit. There may even be a decrease in performance since MTL imposes shared parameters across the different tasks. It would be better to give these distinct tasks full control over their own set of parameters.</p>
+
+<p>Secondly, if the information learnt in one task contradicts that of another task. Consider a dog detection and plant detection task. For the dog detection task, the presence of fur is extremely important. In contrast, for the plant detection task, that feature is irrelevant. If we train the model on both tasks, we can expect to attach a moderate weight to that feature. This weight will be less than the weight that we would learn from training our model on just dog detection. And more than the weight we would learn from training our model on just plant detection. Consequently, the MTL weight is suboptimal for both dog and plant detection.</p>
+
+<h1 id="conclusion">
+<a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h1>
+<p>That’s the end of our primer on multi-task learning! MTL is a powerful and promising technique that allows us to exploit similarities between different related tasks. It does so through parameter sharing. It is important to be discerning about the tasks we include - if not, we may run into the problem of negative transfer (where it is better to train individual models).</p>
+
+<h1 id="useful-resources">
+<a class="anchor" href="#useful-resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Resources</h1>
+<ul>
+  <li><a href="https://cs330.stanford.edu/">Stanford CS330 lectures</a></li>
+  <li><a href="https://arxiv.org/abs/1706.05098">Review paper by Ruder (2017)</a></li>
+  <li>
+<a href="https://ieeexplore.ieee.org/abstract/document/9392366">Review paper by Zhang and Yang (2021)</a> (note: more technical than Ruder (2017))</li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="nicholaslui97/writing"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/writing/multi-task%20learning/deep%20learning/2021/10/13/A-primer-on-Multi-Task-Learning.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/writing/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/writing/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/writing/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://www.linkedin.com/in/nicholas-lui" title="nicholas-lui"><svg class="svg-icon grey"><use xlink:href="/writing/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
