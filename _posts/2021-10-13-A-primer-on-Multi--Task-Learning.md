@@ -5,7 +5,7 @@ toc: true
 comments: true
 layout: post
 categories: [multi-task learning, deep learning]
-image: 
+image: images/HARD.png
 author: Nicholas
 ---
 Hi everyone! Today I would like to share about a new topic in ML that I have been exploring: multi-task learning (MTL). In MTL, we train a “generalist” model that is able to perform a variety of tasks. By exploiting similarities between the different tasks, we are able to achieve **better performance more quickly** for each individual task. Curious to see how this works? Let’s dive in!
