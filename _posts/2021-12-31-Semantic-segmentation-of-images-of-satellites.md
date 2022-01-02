@@ -40,7 +40,6 @@ and parts that we should *fixate on* (e.g. the bottom ring of the satellite whic
 Using Blender, we then labelled each part of the satellite with a unique color.
 
 <img width="60%" alt="space" src="https://user-images.githubusercontent.com/40440105/147863638-d51398ec-c73b-464a-ba4d-d4750f7372a4.png">
-<center><em>Unlabelled vs Labelled satellite image</em></center>
 
 ## Step 2: Artistic modifications
 We compose a series of artistic modifications to make the 3D models look more realistic. For instance, we simulated the lighting conditions of
