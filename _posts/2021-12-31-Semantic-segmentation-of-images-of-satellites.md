@@ -73,13 +73,15 @@ takes up ~94% of all pixels).
 ### I. Categorical Cross-Entropy Loss
 For each pixel, this function computes the log loss
 summed over all possible classes.
-$\[\textrm{CCE}_i = - \sum_{\textrm{classes}}y \log(\hat{y})\]$
+
+$\alpha$
 
 This scoring is computed over all pixels and the average taken. However, this loss function is susceptible to
 class imbalance. For unbalanced data, training might be dominated by the most prevalent class.
 
 ### II. Dice Score
-For a given class, we first compute the F1 score 
+For a given pixel, we compute the F1 scores for all 11 classes. Then, calculate the average. The Dice Score is given by 1 minus the average.
+We are able to mitigate class imbalance as the F1 score balances between precision and recall.
 
 ### III. Dice Score + Focal Loss
 
