@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Semantic segmentation of images of unmanned spacecraft | An adventure into AI</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Semantic segmentation of images of unmanned spacecraft" />
+<meta name="author" content="Nicholas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of unmanned spacecraft and applying state-of-the-art semantic segmentation models to obtain benchmark results." />
+<meta property="og:description" content="A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of unmanned spacecraft and applying state-of-the-art semantic segmentation models to obtain benchmark results." />
+<link rel="canonical" href="https://niclui.github.io/writing/projects/semantic%20segmentation/deep%20learning/2021/12/31/Semantic-segmentation-of-images-of-satellites.html" />
+<meta property="og:url" content="https://niclui.github.io/writing/projects/semantic%20segmentation/deep%20learning/2021/12/31/Semantic-segmentation-of-images-of-satellites.html" />
+<meta property="og:site_name" content="An adventure into AI" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-12-31T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://niclui.github.io/writing/projects/semantic%20segmentation/deep%20learning/2021/12/31/Semantic-segmentation-of-images-of-satellites.html","@type":"BlogPosting","headline":"Semantic segmentation of images of unmanned spacecraft","dateModified":"2021-12-31T00:00:00-06:00","datePublished":"2021-12-31T00:00:00-06:00","author":{"@type":"Person","name":"Nicholas"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/projects/semantic%20segmentation/deep%20learning/2021/12/31/Semantic-segmentation-of-images-of-satellites.html"},"description":"A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of unmanned spacecraft and applying state-of-the-art semantic segmentation models to obtain benchmark results.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/writing/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://niclui.github.io/writing/feed.xml" title="An adventure into AI" /><link rel="shortcut icon" type="image/x-icon" href="/writing/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/writing/">An adventure into AI</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/writing/about/">About Me</a><a class="page-link" href="/writing/">Home</a><a class="page-link" href="/writing/search/">Search</a><a class="page-link" href="/writing/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Semantic segmentation of images of unmanned spacecraft</h1><p class="page-description">A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of unmanned spacecraft and applying state-of-the-art semantic segmentation models to obtain benchmark results.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-12-31T00:00:00-06:00" itemprop="datePublished">
+        Dec 31, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Nicholas</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/writing/categories/#projects">projects</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/writing/categories/#semantic segmentation">semantic segmentation</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/writing/categories/#deep learning">deep learning</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#motivation">Motivation</a></li>
+<li class="toc-entry toc-h1"><a href="#dataset">Dataset</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#step-1-labelling-3d-models">Step 1: Labelling 3D models</a></li>
+<li class="toc-entry toc-h2"><a href="#step-2-artistic-modifications">Step 2: Artistic modifications</a></li>
+<li class="toc-entry toc-h2"><a href="#step-3-generating-synthetic-dataset">Step 3: Generating synthetic dataset</a></li>
+<li class="toc-entry toc-h2"><a href="#step-4-ground-truth-representation">Step 4: Ground truth representation</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#model-training">Model Training</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#architectures">Architectures</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#i-u-net">I. U-Net</a></li>
+<li class="toc-entry toc-h3"><a href="#ii-hrnet">II. HRNet</a></li>
+<li class="toc-entry toc-h3"><a href="#iii-deeplab">III. DeepLab</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#loss-functions">Loss Functions</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#i-categorical-cross-entropy-loss">I. Categorical Cross-Entropy Loss</a></li>
+<li class="toc-entry toc-h3"><a href="#ii-dice-score">II. Dice Score</a></li>
+<li class="toc-entry toc-h3"><a href="#iii-dice-score--focal-loss">III. Dice Score + Focal Loss</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#results">Results</a></li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+</ul><p>I would like to express my deep gratitude to my wonderful teammates (William Armstrong and Spencer Drakontaidis) for their consistently outstanding work, strong collaborative spirit,
+and willingness to tackle difficult, open-ended problems head on. In all sincerity, I could not have asked for better people to work with. Here is our
+<a href="https://drive.google.com/file/d/1Dt2EqArnfQ9w1bR4G_58kiDnz9qdFdZw/view?usp=sharing">project report</a> and 
+<a href="https://github.com/madwsa/mms-imageseg">github</a>.</p>
+
+<h1 id="motivation">
+<a class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation</h1>
+<p>The goal of semantic segmentation is to label different parts of an image with a corresponding class. We have achieved remarkable results in many domains, such
+as <a href="https://paperswithcode.com/task/medical-image-segmentation">medical images</a>.</p>
+
+<p>However, there has been little progress made on segmenting images of <strong>satellites</strong> (i.e. developing a model that can identify different satellite parts, such as
+the solar panels and antenna, from a given image). This is not ideal. Developing a system that can do so is fundamental to many
+important applications such as autonomous satellite rendezvous (i.e. enabling satellites to rendezvous and dock by another unmanned spacecraft with zero/little human input).</p>
+
+<p>The key obstacle is the lack of a labelled dataset of satellites. Pictures of satellites in space are hard to come by (much less labelled ones). To address this,
+we generated a prototype synthetic dataset of labelled satellites and trained a variety of state-of-the-art segmentation models on it for benchmark results.</p>
+
+<h1 id="dataset">
+<a class="anchor" href="#dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dataset</h1>
+<p>We use NASA’s open-source 3D models of satellites to produce our synthetic dataset. To provide our dataset with a variety of spacecraft configurations, we chose the Chandra X-Ray Observatory, Near Earth Asteroid Rendezvous – Shoemaker
+(NEAR Shoemaker), Cluster II, and the IBEX Interstellar Boundary Explorer, as 3D models from which to generate synthetic images. We used the Blender software to process the 3D models.</p>
+
+<h2 id="step-1-labelling-3d-models">
+<a class="anchor" href="#step-1-labelling-3d-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step 1: Labelling 3D models</h2>
+<p>In consultation with an industry expert (Kevin Okseniuk, systems test engineer at Momentus), we identified eleven classes for our segmentation task.
+The classes include solar panels, antennas, and thrusters. These classes were chosen because they are crucial to automous satellite rendezvous.
+They include satellite parts that we should <em>avoid</em> during rendezvous (e.g. thrusters which produce liquid that may obstruct the view of the docking spacecraft)
+and parts that we should <em>fixate on</em> (e.g. the bottom ring of the satellite which provides a good grip point for the docking spacecraft).</p>
+
+<p>Using Blender, we then labelled each part of the satellite with a unique color.</p>
+
+<h2 id="step-2-artistic-modifications">
+<a class="anchor" href="#step-2-artistic-modifications" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step 2: Artistic modifications</h2>
+<p>We compose a series of artistic modifications to make the 3D models look more realistic. For instance, we simulated the lighting conditions of
+<a href="https://en.wikipedia.org/wiki/Low_Earth_orbit">low earth orbit</a> by illuminating the model with two light sources: one light source at infinity simulating the intensity,
+color, and parallel light rays of the sun, and one planar light source to simulate earthshine, i.e. the sunlight reflected by the surface of the earth.</p>
+
+<h2 id="step-3-generating-synthetic-dataset">
+<a class="anchor" href="#step-3-generating-synthetic-dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step 3: Generating synthetic dataset</h2>
+<p>We wrote a Python script to move the camera in Blender in a spherical pattern around the
+3D model to one of 5000 positions. For each position,
+three rendered images were generated with the same
+aspect, but with different ranges. This gave us 15,000 images for each 3D model and a total of 60,000 images.</p>
+
+<p>This process was repeated for both the unlabelled and labelled 3D models, giving us 60,000 base image and ground truth pairs.</p>
+
+<h2 id="step-4-ground-truth-representation">
+<a class="anchor" href="#step-4-ground-truth-representation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Step 4: Ground truth representation</h2>
+<p>Originally, for a given synthetic image, each pixel has three values for its R/G/B colors.
+To make these images more understandable for our model, we used Python’s Pillow library
+to map each combination of RGB values to the corresponding class label (ranging from 0 to 10).
+Subsequently, each pixel of a synthetic image contains only one value (from 0 to 10) which corresponds to its respective class.</p>
+
+<h1 id="model-training">
+<a class="anchor" href="#model-training" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model Training</h1>
+<h2 id="architectures">
+<a class="anchor" href="#architectures" aria-hidden="true"><span class="octicon octicon-link"></span></a>Architectures</h2>
+<p>After preparing our synthetic dataset, we proceed with training 3 state-of-the-art deep learning segmentation models using Python’s FastAI and SemTorch libraries.
+In each case, a backbone pre-trained on ImageNet was incorporated to leverage transfer learning in extracting features from the input image.</p>
+
+<h3 id="i-u-net">
+<a class="anchor" href="#i-u-net" aria-hidden="true"><span class="octicon octicon-link"></span></a>I. U-Net</h3>
+
+<h3 id="ii-hrnet">
+<a class="anchor" href="#ii-hrnet" aria-hidden="true"><span class="octicon octicon-link"></span></a>II. HRNet</h3>
+
+<h3 id="iii-deeplab">
+<a class="anchor" href="#iii-deeplab" aria-hidden="true"><span class="octicon octicon-link"></span></a>III. DeepLab</h3>
+
+<h2 id="loss-functions">
+<a class="anchor" href="#loss-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Loss Functions</h2>
+<p>We also experimented with a variety of loss functions to mitigate the class imbalance in the dataset (for instance, the background/non-essential satellite parts
+takes up ~94% of all pixels).</p>
+
+<h3 id="i-categorical-cross-entropy-loss">
+<a class="anchor" href="#i-categorical-cross-entropy-loss" aria-hidden="true"><span class="octicon octicon-link"></span></a>I. Categorical Cross-Entropy Loss</h3>
+<p>For each pixel, this function computes the log loss
+summed over all possible classes.
+$\begin{center}
+[\textrm{CCE}<em>i = - \sum</em>{\textrm{classes}}y \log(\hat{y})]
+\end{center}$</p>
+
+<p>This scoring is computed over all pixels and the average taken. However, this loss function is susceptible to
+class imbalance. For unbalanced data, training might be dominated by the most prevalent class.</p>
+
+<h3 id="ii-dice-score">
+<a class="anchor" href="#ii-dice-score" aria-hidden="true"><span class="octicon octicon-link"></span></a>II. Dice Score</h3>
+<p>For a given class, we first compute the F1 score</p>
+
+<h3 id="iii-dice-score--focal-loss">
+<a class="anchor" href="#iii-dice-score--focal-loss" aria-hidden="true"><span class="octicon octicon-link"></span></a>III. Dice Score + Focal Loss</h3>
+
+<h1 id="results">
+<a class="anchor" href="#results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Results</h1>
+
+<h1 id="conclusion">
+<a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h1>
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="nicholaslui97/writing"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/writing/projects/semantic%20segmentation/deep%20learning/2021/12/31/Semantic-segmentation-of-images-of-satellites.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/writing/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/writing/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/writing/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://www.linkedin.com/in/nicholas-lui" target="_blank" title="nicholas-lui"><svg class="svg-icon grey"><use xlink:href="/writing/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
