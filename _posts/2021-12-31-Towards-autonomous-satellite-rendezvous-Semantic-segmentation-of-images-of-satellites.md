@@ -1,6 +1,6 @@
 ---
-title: [Project] Semantic image segmentation of imagery of satellites using synthetic data
-description: A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of unmanned spacecraft and applying state-of-the-art semantic segmentation models to obtain benchmark results.
+title: Towards autonomous satellite rendezvous - semantic segmentation of images of satellites.
+description: A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of satellites and applying state-of-the-art semantic segmentation models to obtain benchmark results.
 toc: true
 comments: true
 layout: post
