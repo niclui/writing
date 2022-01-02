@@ -24,8 +24,11 @@ important applications such as autonomous satellite rendezvous (i.e. enabling sa
 The key obstacle is the lack of a labelled dataset of satellites. Pictures of satellites in space are hard to come by (much less labelled ones). To address this,
 we generated a prototype synthetic dataset of labelled satellites and trained a variety of state-of-the-art segmentation models on it for benchmark results.
 
+<img width="40%" alt="space" src="https://user-images.githubusercontent.com/40440105/131346647-7520b550-7ece-457d-9f23-92bb92ec5457.png">
+<center><em>Soyuz-TMA satellite in space (source: Wikipedia)</em></center>
+
 # Dataset
-We use NASA's open-source 3D models of satellites to produce our synthetic dataset. To provide our dataset with a variety of spacecraft configurations, we chose the Chandra X-Ray Observatory, Near Earth Asteroid Rendezvous – Shoemaker
+We use NASA's <a href="https://nasa3d.arc.nasa.gov/models">open-source 3D models of satellites</a> to produce our synthetic dataset. To provide our dataset with a variety of spacecraft configurations, we chose the Chandra X-Ray Observatory, Near Earth Asteroid Rendezvous – Shoemaker
 (NEAR Shoemaker), Cluster II, and the IBEX Interstellar Boundary Explorer, as 3D models from which to generate synthetic images. We used the Blender software to process the 3D models.
 
 ## Step 1: Labelling 3D models
@@ -35,6 +38,9 @@ They include satellite parts that we should *avoid* during rendezvous (e.g. thru
 and parts that we should *fixate on* (e.g. the bottom ring of the satellite which provides a good grip point for the docking spacecraft).
 
 Using Blender, we then labelled each part of the satellite with a unique color.
+
+<img width="60%" alt="space" src="https://user-images.githubusercontent.com/40440105/147863638-d51398ec-c73b-464a-ba4d-d4750f7372a4.png">
+<center><em>Unlabelled vs Labelled satellite image</em></center>
 
 ## Step 2: Artistic modifications
 We compose a series of artistic modifications to make the 3D models look more realistic. For instance, we simulated the lighting conditions of
@@ -93,11 +99,8 @@ For a given pixel, we compute the F1 score (also known as the Dice Coefficient) 
 The Dice Score is given by 1 minus the arithmetic mean across all 11 classes.
 We are able to mitigate class imbalance as the F1 score balances between precision and recall.
 
-$DiceLoss_i = 1 - \frac{\sum_{classes} ClassDiceCoeff}{# classes}$
-
-
 ### III. Dice Score + Focal Loss
-Focal loss \modifies the pixel-wise cross-entropy loss by down-weighting the loss of easy-to-classify pixels based on a hyperparamter $\gamma$, focusing training on more difficult examples. The focal loss is given by:
+Focal loss modifies the pixel-wise cross-entropy loss by down-weighting the loss of easy-to-classify pixels based on a hyperparamter $\gamma$, focusing training on more difficult examples. The focal loss is given by:
 
 $FocalLoss_i = - \sum_{classes} (1 - \hat{y})^{\gamma} y \log(\hat{y})$
 
