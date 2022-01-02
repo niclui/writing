@@ -35,11 +35,13 @@ We use NASA's <a href="https://nasa3d.arc.nasa.gov/models">open-source 3D models
 In consultation with an industry expert (Kevin Okseniuk, systems test engineer at Momentus), we identified eleven classes for our segmentation task.
 The classes include solar panels, antennas, and thrusters. These classes were chosen because they are crucial to automous satellite rendezvous.
 They include satellite parts that we should *avoid* during rendezvous (e.g. thrusters which produce liquid that may obstruct the view of the docking spacecraft)
-and parts that we should *fixate on* (e.g. the bottom ring of the satellite which provides a good grip point for the docking spacecraft).
+and parts that we should *fixate on* (e.g. the launch vehicle adapter - the bottom ring of the satellite which provides a good grip point for the docking spacecraft).
 
 Using Blender, we then labelled each part of the satellite with a unique color.
 
-<img width="60%" alt="space" src="https://user-images.githubusercontent.com/40440105/147863638-d51398ec-c73b-464a-ba4d-d4750f7372a4.png">
+<img width="60%" alt="space" src="https://user-images.githubusercontent.com/40440105/147867194-0591e51e-0f85-48fd-b04c-85b7662bfbab.png">
+<center><em>Unlabelled vs labelled model. In this scenario, 9 out of the 11 classes are present.</em></center>
+
 
 ## Step 2: Artistic modifications
 We compose a series of artistic modifications to make the 3D models look more realistic. For instance, we simulated the lighting conditions of
@@ -106,8 +108,56 @@ $FocalLoss_i = - \sum_{classes} (1 - \hat{y})^{\gamma} y \log(\hat{y})$
 Dice + focal loss blends Dice and focal loss with a mixing parameter α applied to the focal loss, balancing
 global (Dice) and local (focal) features of the target mask. We used the default values of $\gamma$ = 2 and $\alpha$ = 1 during training
 
-# Results
+## Model Training
+Our 60,000 images were split into a 80/10/10 split for training, validation, and testing. We plotted the loss against a range of learning rates
+and chose the region of gradient descent for learning rate annealing. Adam optimizer was used. Each model was trained
+for five epochs, with early stopping at a patience of
+two; though the loss appeared to plateau in all cases,
+the early stopping criterion was met in none.
+Weight decay and batch normalization were used. Basic data augmentation (flipping, rotating, tranposing) was also performed.
 
+A total of 9 models (3 different architectures with 3 possible loss functions) were trained.
+
+# Results
+Our evaluation metric was the Dice Coefficient (average F1 score across all classes). Using this metric, UNet with cross-entropy loss was identified to be the
+best performing model with a Dice Coefficient of 0.8723.
+
+<img width="50%" alt="space" src="https://user-images.githubusercontent.com/40440105/147867043-67178eab-00d9-4de6-8200-d70cc1ebf090.png">
+<center><em>Model results</em></center>
+
+Interestingly, even with a high degree of class imbalance, Dice
+loss and Dice + focal loss did not always lead to an
+improvement in model performance, perhaps owing
+to CCE loss having a smoother gradient than that of
+Dice loss, resulting in a less noisy descent path during
+optimization.
+
+We then computed the F1 score for each class using this model. The model did very well on identifying most classes.
+Certain classes were harder to detect (e.g. the rotational thrusters, possibly because of its small size).
+
+<img width="50%" alt="space" src="https://user-images.githubusercontent.com/40440105/147867053-b968f32b-9f99-40f3-af22-a78c70c3df6b.png">
+<center><em>F1 score for each class</em></center>
+
+
+<img width="50%" alt="space" src="https://user-images.githubusercontent.com/40440105/147867093-0911351c-61a0-4dde-b53c-8045da7bbbcc.png">
+<center><em>Example true and predicted masks, Chandra. Note that the rotational thruster (in the black box in the left picture)
+  is not identified.</em></center>
+
+
+In the full report, we also test our models on data generated from a completely unseen satellite. We find that the models perform much more poorly (max Dice Coefficient
+of 0.2519) for this unseen satellite, suggesting that our model is not able to generalize beyond the main four spacecraft. For the unseen satellite,
+we are able to identify larger components (e.g. main module and solar panels) but perform very poorly on the smaller parts.
+  
 # Conclusion
+Our project demonstrates an innovative approach to data synthesis for the semantic segmentation of satellites. Our initial results suggest that
+segmentation models trained on this dataset can recognize many different spacecraft components and categorize them appropriately by type.
+
+The poor performance on the unseen satellite suggests that this good performance may not be readily generalizable. This suggests that semantic segmentation for 
+autonomous satellite rendezvous may be practical only when the target spacecraft is known and has been included in the training dataset. To improve the generalizability
+of our models, we should expand the dataset (beyond just 4 satellites) and explore techniques to improve generalizability (e.g. shallower architectures and lower variance
+segmentation models).
+
+Much work remains to be done in this important domain. We are excited to see how our data synthesis approach can be built upon to produce more performant segmentation models.
+Thank you for reading!
 
 
