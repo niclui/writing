@@ -34,7 +34,7 @@ We use NASA's <a href="https://nasa3d.arc.nasa.gov/models">open-source 3D models
 
 ## Step 1: Labelling 3D models
 In consultation with an industry expert (Kevin Okseniuk, systems test engineer at Momentus), we identified eleven classes for our segmentation task.
-The classes include solar panels, antennas, and thrusters. These classes were chosen because they are crucial to automous satellite rendezvous.
+Thrusters, antennas, and solar panels are some of the classes that we identified. These classes were chosen because they are crucial to automous satellite rendezvous.
 They include satellite parts that we should *avoid* during rendezvous (e.g. thrusters which produce liquid that may obstruct the view of the docking spacecraft)
 and parts that we should *fixate on* (e.g. the launch vehicle adapter - the bottom ring of the satellite which provides a good grip point for the docking spacecraft).
 
@@ -59,7 +59,7 @@ This process was repeated for both the unlabelled and labelled 3D models, giving
 
 ## Step 4: Ground truth representation
 Originally, for a given synthetic image, each pixel has three values for its R/G/B colors.
-To make these images more understandable for our model, we used Python's Pillow library
+To make these images more accessible for our model, we used Python's Pillow library
 to map each combination of RGB values to the corresponding class label (ranging from 0 to 10).
 Subsequently, each pixel of a synthetic image contains only one value (from 0 to 10) which corresponds to its respective class.
 
