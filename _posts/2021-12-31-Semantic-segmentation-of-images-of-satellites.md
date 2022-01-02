@@ -1,5 +1,5 @@
 ---
-title: Semantic segmentation of images of unmanned spacecraft
+title: Semantic segmentation of images of satellites
 description: A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of unmanned spacecraft and applying state-of-the-art semantic segmentation models to obtain benchmark results.
 toc: true
 comments: true
@@ -61,10 +61,19 @@ After preparing our synthetic dataset, we proceed with training 3 state-of-the-a
 In each case, a backbone pre-trained on ImageNet was incorporated to leverage transfer learning in extracting features from the input image. 
 
 ### I. U-Net
+<a href="https://medium.com/@keremturgutlu/semantic-segmentation-u-net-part-1-d8d6f6005066">U-Net</a> is an encoder-decoder network which aims to provide precise localization even when using a
+smaller dataset than is typically used for image segmentation tasks. 
 
 ### II. HRNet
+<a href="https://towardsdatascience.com/hrnet-explained-human-pose-estimation-sematic-segmentation-and-object-detection-63f1ce79ef82">HRNet</a> (High-Resolution Net) is a CNN developed specifically to retain and use high-resolution inputs
+throughout the network, resulting in better performance for segmentation tasks.
+HRNet aims to provide high spatial precision, which is desirable in this task due to the variety of classes and class imbalance.
 
 ### III. DeepLab
+<a href="https://towardsdatascience.com/the-evolution-of-deeplab-for-semantic-segmentation-95082b025571">DeepLab</a> is a CNN developed and open-sourced by Google that relies heavily on
+<a href="https://towardsdatascience.com/review-deeplabv3-atrous-convolution-semantic-segmentation-6d818bfd1d74">Atrous Convolution</a>
+to perform image segmentation tasks.
+More specifically, we used the latest iteration of the DeepLab model at time of writing, DeepLabv3+, as implemented by FastAI.
 
 ## Loss Functions
 We also experimented with a variety of loss functions to mitigate the class imbalance in the dataset (for instance, the background/non-essential satellite parts
@@ -81,8 +90,11 @@ class imbalance. For unbalanced data, training might be dominated by the most pr
 
 ### II. Dice Score
 For a given pixel, we compute the F1 score (also known as the Dice Coefficient) for all 11 classes.
-Then, calculate the arithmetic mean. The Dice Score is given by 1 minus the mean. 
+The Dice Score is given by 1 minus the arithmetic mean across all 11 classes.
 We are able to mitigate class imbalance as the F1 score balances between precision and recall.
+
+$DiceLoss_i = 1 - \frac{\sum_{classes} ClassDiceCoeff}{# classes}$
+
 
 ### III. Dice Score + Focal Loss
 Focal loss \modifies the pixel-wise cross-entropy loss by down-weighting the loss of easy-to-classify pixels based on a hyperparamter $\gamma$, focusing training on more difficult examples. The focal loss is given by:
