@@ -4,8 +4,8 @@ description: A project that my team worked on for our Stanford CS230 project. Ou
 toc: true
 comments: true
 layout: post
-image: images/chandra.jpg
 categories: [projects, semantic segmentation, deep learning]
+image: images/chandra.jpg
 author: Nicholas
 ---
 
