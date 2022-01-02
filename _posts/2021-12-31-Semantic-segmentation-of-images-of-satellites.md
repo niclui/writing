@@ -24,7 +24,7 @@ important applications such as autonomous satellite rendezvous (i.e. enabling sa
 The key obstacle is the lack of a labelled dataset of satellites. Pictures of satellites in space are hard to come by (much less labelled ones). To address this,
 we generated a prototype synthetic dataset of labelled satellites and trained a variety of state-of-the-art segmentation models on it for benchmark results.
 
-<img width="40%" alt="space" src="https://user-images.githubusercontent.com/40440105/131346647-7520b550-7ece-457d-9f23-92bb92ec5457.png">
+<img width="40%" alt="space" src="https://user-images.githubusercontent.com/40440105/147863650-c16a1a73-4326-4cad-b976-3f3a2483161d.jpg">
 <center><em>Soyuz-TMA satellite in space (source: Wikipedia)</em></center>
 
 # Dataset
