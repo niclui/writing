@@ -74,7 +74,7 @@ takes up ~94% of all pixels).
 For each pixel, this function computes the log loss
 summed over all possible classes.
 
-$\alpha$
+$Loss_i = - \sum_{classes} y \log(\hat{y})$
 
 This scoring is computed over all pixels and the average taken. However, this loss function is susceptible to
 class imbalance. For unbalanced data, training might be dominated by the most prevalent class.
@@ -85,11 +85,12 @@ Then, calculate the arithmetic mean. The Dice Score is given by 1 minus the mean
 We are able to mitigate class imbalance as the F1 score balances between precision and recall.
 
 ### III. Dice Score + Focal Loss
-Focal loss \modifies the pixel-wise cross-entropy loss by down-weighting the loss of easy-to-classify pixels based on a hyperparamter $\gamma$, focusing training on more difficult examples. The loss is given by:
+Focal loss \modifies the pixel-wise cross-entropy loss by down-weighting the loss of easy-to-classify pixels based on a hyperparamter $\gamma$, focusing training on more difficult examples. The focal loss is given by:
+
+$FocalLoss_i = - \sum_{classes} (1 - \hat{y})^{\gamma} y \log(\hat{y})$
 
 Dice + focal loss blends Dice and focal loss with a mixing parameter α applied to the focal loss, balancing
-global (Dice) and local (focal) features of the target
-mask. We used the default values of γ = 2 and α = 1 during training
+global (Dice) and local (focal) features of the target mask. We used the default values of $\gamma$ = 2 and $\alpha$ = 1 during training
 
 # Results
 
