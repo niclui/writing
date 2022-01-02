@@ -111,7 +111,7 @@ global (Dice) and local (focal) features of the target mask. We used the default
 
 ## Model Training
 Our 60,000 images were split into a 80/10/10 split for training, validation, and testing. We plotted the loss against a range of learning rates
-and chose the region of gradient descent for learning rate annealing. Adam optimizer was used. Each model was trained
+and chose the region of greatest descent for learning rate annealing. Adam optimizer was used. Each model was trained
 for five epochs, with early stopping at a patience of
 two; though the loss appeared to plateau in all cases,
 the early stopping criterion was met in none.
