@@ -1,5 +1,5 @@
 ---
-title: Towards autonomous satellite rendezvous&#58; Semantic segmentation of images of satellites
+title: Towards autonomous satellite rendezvous - Semantic segmentation of images of satellites
 description: A project that my team worked on for our Stanford CS230 project. Our contributions include generating a synthetic dataset of images of unmanned spacecraft and applying state-of-the-art semantic segmentation models to obtain benchmark results.
 toc: true
 comments: true
