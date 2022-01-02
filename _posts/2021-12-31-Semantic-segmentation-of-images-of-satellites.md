@@ -73,9 +73,7 @@ takes up ~94% of all pixels).
 ### I. Categorical Cross-Entropy Loss
 For each pixel, this function computes the log loss
 summed over all possible classes.
-$\begin{center}
-\[\textrm{CCE}_i = - \sum_{\textrm{classes}}y \log(\hat{y})\]
-\end{center}$
+$\[\textrm{CCE}_i = - \sum_{\textrm{classes}}y \log(\hat{y})\]$
 
 This scoring is computed over all pixels and the average taken. However, this loss function is susceptible to
 class imbalance. For unbalanced data, training might be dominated by the most prevalent class.
