@@ -67,8 +67,7 @@ Thus far, the model is trained solely on in-domain data. However, we want to see
 
 ## Data Augmentation
 As we have limited out-of-domain data to train and finetune on, we hypothesize that out-of-domain
-data augmentation may help improve the performance of our model. Therefore, we implement two
-techniques to expand our out-of-domain data samples.
+data augmentation may help improve the performance of our model. Thus, we expand our out-of-domain samples using 2 methods:
 
 **EDA: Synonym Swapping**. We implement the synonym swap method from the <a href="https://github.com/makcedward/nlpaug">nlpaug</a>
 package for easy data augmentation. To accomplish this, we replace random words in the context paragraph with its synonyms. Here is an example:
@@ -83,10 +82,7 @@ Context paragraph variant 2: "Quentin is a big **enthusiast** of machine learnin
 
 Using this approach, we generate 381 extra context-question pairs from the out-of-domain data.
 
-**Synthetic Question Answer Generation.** The first approach creates new variants of _context paragraphs_. However, we might also want to create new variants of _questions_. To do so, we leverage <a href="https://arxiv.org/abs/1906.05416">Google's multitask T5 model</a> (fine-tuned on a SQuAD dataset) to generate synthetic question-answer pairs for a given context paragraph. To ensure **roundtrip consistency**, we remove duplicate questions and then rerun
-the QA portion of the T5 model to repredict the answer given the generated question and context
-chunk. We only keep question answer pairs in which the QA model predicts the same answer as the
-generated answer to ensure we have high-quality question-answer pairs. Using this approach, we
+**Synthetic Question Answer Generation.** The first approach creates new variants of _context paragraphs_. However, we might also want to create new variants of _questions_. To do so, we leverage <a href="https://arxiv.org/abs/1906.05416">Google's multitask T5 model</a> (fine-tuned on a SQuAD dataset) to generate synthetic question-answer pairs for a given context paragraph. To ensure **roundtrip consistency**, we take the generated context-question pair and feed it back into the QA portion of the T5 model. If the T5 model is able to predict the correct answer, we keep the synthetic sample. If not, we discard it. Using this approach, we
 generate 1579 extra context-question-answer pairs.
 
 ## Domain Alignment
@@ -103,7 +99,7 @@ when it has few samples to learn from in some domains.
 data, the discriminator faces major class imbalance as there are more than 3500 times more in-domain
 samples than out-of-domain samples.
 
-We hypothesize that these challenges make it difficult for the
+These challenges may make it difficult for the
 discriminator to learn to distinguish between domains. Consequently, the discriminator exerts less pressure on the QA model, diminishing the QA model’s ability to generalize to out-of-domain samples.
 
 To rectify these issues, we introduce Wiki alignment. In Wiki alignment, the Wiki datasets (SQuAD, NaturalQuestions, RelationExtraction) are treated as one domain, while the non-Wiki datasets (NewsQA, DuoRC, RACE) treated as a separate domain. This allows us to partition the sample space into fewer, better-balanced
