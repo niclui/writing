@@ -113,7 +113,7 @@ gradually increased using a tanh function before plateauing at 0.01 at step 20,0
 discriminator from initially being overwhelmed with difficult examples, and allows it to progressively
 train on harder examples.
 
-Secondly, we incorporate Wasserstein regularization where the weights of the discriminator are
+Secondly, we incorporate <a href="https://proceedings.mlr.press/v70/arjovsky17a.html">Wasserstein regularization</a> where the weights of the discriminator are
 clipped between -0.01 and 0.01 before backward propagation. Weight clipping can enforce the
 Lipschitz constraint, which regularizes adversarial training and improves stability.
 
