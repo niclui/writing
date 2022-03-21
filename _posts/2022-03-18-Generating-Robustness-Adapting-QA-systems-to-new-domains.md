@@ -1,9 +1,10 @@
 ---
 title: Generating Robustness - Adapting QA systems to new domains
-description: A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques that boost the robustness of a QA model trained with domain adversarial learning and evaluated on out-of-domain data, yielding a 16% increase in F1 score in development and 10% increase in test.
+description: A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a QA model, improving its ability to generalize to new domains.
 toc: true
 comments: true
 layout: post
+image: images/siri.jpg
 categories: [projects, nlp, deep learning]
 author: Nicholas
 ---
