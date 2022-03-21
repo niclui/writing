@@ -30,13 +30,13 @@ In an ideal world, we would be able to plug this gap by simply getting more labe
 is hard to come by and extremely expensive to create (think about the number of man hours needed to create new context-question pairs). As such, we need to explore new techniques
 to build robustness in QA systems, allowing them to generalize to unseen domains.
 
-In our project, we implement a variety of techniques that boost the robustness of a QA model trained with domain adversarial learning and evaluated on out-of-domain data, yielding a **16% increase in F1 score in development** and **10% increase in test**. We find that the following innovations boost model performance: 1) finetuning the model on augmented out-of-domain data, 2) redefining domains during adversarial training to simplify the domain discriminator’s task, and 3) supplementing the training data with synthetic QA pairs generated with roundtrip consistency. We also ensemble the best-performing models on each dataset and find that ensembling yields further performance increases.
+In our project, we implement a variety of techniques that boost the robustness of a QA model trained with domain adversarial learning and evaluated on out-of-domain data, yielding a **16% increase in F1 score in development** and **10% increase in test**.
 
 # Setup
 We are given 3 in-domain training datasets, each with 50,000 samples. The datasets are SQuAD (Wikipedia articles), NaturalQuestions (Wikipedia articles), and NewsQA (news articles). We are also given 3 out-of-domain training datasets, each with approximately 100 samples. The datasets are RelationExtraction (Wikipedia articles), DuoRC (movie reviews), and RACE (examination questions). Performance is evaluated on the out-of-domain validation set.
 
 # Baseline
-Our baseline model is a DistilBERT trained solely on in-domain data. It achieves an **F1 score of 49.88**. In the sections below, I will talk about the techniques we employed, followed by overall results and insights.
+Our baseline QA model is a DistilBERT trained solely on in-domain data. The QA model looks at a context paragraph and question. It then predicts the start and end position of the answer in the context paragraph. The predicted start and end positions are subsequently compared with the ground truth labels. Our baseline model achieves an **F1 score of 49.88**. In the sections below, I will talk about the techniques we employed, followed by overall results and insights.
 
 # Techniques
 
