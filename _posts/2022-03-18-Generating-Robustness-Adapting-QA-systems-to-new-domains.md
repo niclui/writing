@@ -121,6 +121,38 @@ Lipschitz constraint, which regularizes adversarial training and improves stabil
 Finally, we explore ensembling different performant models together to reduce overall variance. Intuitively, different models have different noise patterns. By ensembling them together, noise patterns cancel out and the resultant ensemble achieves better and more stable performance. We experiment ensembling the best model for each out-of-domain dataset (total of 3 component models).
 
 # Overall Results & Insights
+After running a series of experiments, we find that training a Wiki-aligned adversarial model on additional synthetic out-of-domain samples and subsequently fine-tuning it on augmented oo-domain samples (using synonym replacement) produces the best results. The model achieves an F1 score of **55.53**, which is a **11% improvement in dev F1 over the baseline.**
+
+Here are some of our key insights (for a more comprehensive and detailed list, please see the actual report):
+
+1.	Without fine-tuning, we find that the adversarial model underperforms the baseline model. In contrast, after fine-tuning, the adversarial model sees a large jump in F1 score and outperforms the baseline. We hypothesize that the model learns domain-invariant features during training but is only able to adapt them to out-of-domain samples after fine-tuning with out-of-domain data. **This suggests that fine-tuning is crucial in “unlocking” the potential of adversarial learning.**
+
+2.	Wiki alignment is crucial in helping the discriminator learn better, which in turn improves QA model performance. **Having well-defined domains is thus imperative for effective adversarial learning.**
+
+3.	Including synthetic out-of-domain samples helps training, but hurts fine-tuning. The opposite is true for augmented (synonym replacement) out-of-domain samples. We suspect that the model is very sensitive to the quality of out-of-domain samples during fine-tuning as it is trying to extract precise features from the samples. **As such, synthetic question generation performs more poorly than simple synonym replacement as it attempts to recreate questions from scratch and is thus noisier.**
+In contrast, during training, the noise of out-of-domain samples is less of a concern since (i) we are trying to learn general domain-invariant features rather than precise domain-specific features and (ii) the noise is averaged over a much larger dataset. What is important is having a diversity of question-answer pairs for more parts of the context paragraph. Intuitively, the original dataset has large context paragraphs with only a few questions that look at specific parts of the paragraph. Example:
+
+Context paragraph: “Hi, I am Quentin. I love eating burgers and cooking them by myself. I aspire to be a chef one day and open my own burger restaurant. By the way, my birthday is next month so you know what to get me!”
+
+Question: “When is Quentin’s birthday?”
+
+Answer: “next month”
+
+The model can get away with reading only a small section of the paragraph, which prevents it from fully understanding the context paragraph. If we can create new question-answer pairs that covers the _entire_ context paragraph, we will force our QA model and discriminator to learn about the structure and characteristics of the entire paragraph. This in turn allows it to learn domain-invariant features better. **Synthetic question generation tackles this root problem and thus performs much better than simple synonym replacement when used in training.**
+
+4.	Tuning discriminator architecture using Lambda annealing and Wasserstein regularization leads to a slight degradation in performance on our best model. We think that synthetic out-of-domain training data already sufficiently improves discriminator training by providing enough out-of-domain samples from the adversarial model to learn on. **As such, the imposition of additional constraints may be unnecessary and potentially harmful to model performance.** For instance, it is not necessary to anneal lambda from 0 if the discriminator is already able to handle difficult examples from the get-go. Doing so will only deprive it of valuable training time.
+
+Finally, we explore ensembling and ensemble together the best models for each out-of-domain dataset. The ensemble achieves a **dev F1 of 57.8**6, which is a** 16% improvement over the baseline.** It also achieves a **test F1 of 65.27**, which is a **10% improvement over baseline.** By averaging across models with different noise patterns, **ensembling is an effective way of boosting performance.**
+
+# Conclusion
+We implemented a variety of techniques that boosted the robustness of a QA model to domain shifts, achieving a 16% improvement in dev F1 and a 10% improvement in test F1. Here are some questions that we want to consider exploring:
+
+-	What if we redefine domains in a more computational way (vs using a simple heuristic)? For instance, clustering together samples with similar word embeddings as one domain. This might allow us to pick up deeper domain relationships.
+
+-	What if we explore different ways of augmented out-of-domain samples? We have tried out synonym replacement but what about other techniques such as random insertion (where words are randomly inserted into the paragraph)?
+
+There remains much work to be done to make our QA systems robust and accessible for all. Thank you for reading!
+
 
 
 
