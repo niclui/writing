@@ -4,21 +4,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Generating Robustness - Adapting QA systems to new domains | An adventure into AI</title>
+<title>Generating Robustness - Adapting Question and Answering systems to new domains | An adventure into AI</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Generating Robustness - Adapting QA systems to new domains" />
+<meta property="og:title" content="Generating Robustness - Adapting Question and Answering systems to new domains" />
 <meta name="author" content="Nicholas" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a QA model, improving its ability to generalize to new domains." />
-<meta property="og:description" content="A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a QA model, improving its ability to generalize to new domains." />
-<link rel="canonical" href="https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-QA-systems-to-new-domains.html" />
-<meta property="og:url" content="https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-QA-systems-to-new-domains.html" />
+<meta name="description" content="A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a question and answering model, improving its ability to generalize to new domains." />
+<meta property="og:description" content="A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a question and answering model, improving its ability to generalize to new domains." />
+<link rel="canonical" href="https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-Question-and-Answering-systems-to-new-domains.html" />
+<meta property="og:url" content="https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-Question-and-Answering-systems-to-new-domains.html" />
 <meta property="og:site_name" content="An adventure into AI" />
 <meta property="og:image" content="https://niclui.github.io/writing/images/siri.jpg" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2022-03-18T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-QA-systems-to-new-domains.html","@type":"BlogPosting","headline":"Generating Robustness - Adapting QA systems to new domains","dateModified":"2022-03-18T00:00:00-05:00","datePublished":"2022-03-18T00:00:00-05:00","image":"https://niclui.github.io/writing/images/siri.jpg","author":{"@type":"Person","name":"Nicholas"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-QA-systems-to-new-domains.html"},"description":"A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a QA model, improving its ability to generalize to new domains.","@context":"https://schema.org"}</script>
+{"url":"https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-Question-and-Answering-systems-to-new-domains.html","@type":"BlogPosting","headline":"Generating Robustness - Adapting Question and Answering systems to new domains","dateModified":"2022-03-18T00:00:00-05:00","datePublished":"2022-03-18T00:00:00-05:00","image":"https://niclui.github.io/writing/images/siri.jpg","author":{"@type":"Person","name":"Nicholas"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://niclui.github.io/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-Question-and-Answering-systems-to-new-domains.html"},"description":"A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a question and answering model, improving its ability to generalize to new domains.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/writing/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://niclui.github.io/writing/feed.xml" title="An adventure into AI" /><link rel="shortcut icon" type="image/x-icon" href="/writing/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -89,7 +89,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Generating Robustness - Adapting QA systems to new domains</h1><p class="page-description">A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a QA model, improving its ability to generalize to new domains.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-03-18T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Generating Robustness - Adapting Question and Answering systems to new domains</h1><p class="page-description">A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a question and answering model, improving its ability to generalize to new domains.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-03-18T00:00:00-05:00" itemprop="datePublished">
         Mar 18, 2022
       </time>• 
           <span itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -165,7 +165,7 @@ to build robustness in QA systems, allowing them to generalize to unseen domains
 
 <h1 id="baseline">
 <a class="anchor" href="#baseline" aria-hidden="true"><span class="octicon octicon-link"></span></a>Baseline</h1>
-<p>Our baseline model is a DistilBERT trained solely on in-domain data. It achieves an F1 score of 49.88. In the sections below, I will talk about the techniques we employed, followed by any interesting insights we gleaned.</p>
+<p>Our baseline model is a DistilBERT trained solely on in-domain data. It achieves an <strong>F1 score of 49.88</strong>. In the sections below, I will talk about the techniques we employed, followed by overall results and insights.</p>
 
 <h1 id="techniques">
 <a class="anchor" href="#techniques" aria-hidden="true"><span class="octicon octicon-link"></span></a>Techniques</h1>
@@ -196,14 +196,14 @@ between the uniform distribution over all K domains and the discriminator’s ac
 
 <h2 id="using-out-of-domain-data-in-training-and-fine-tuning">
 <a class="anchor" href="#using-out-of-domain-data-in-training-and-fine-tuning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using out-of-domain data in training and fine-tuning</h2>
-<p>Thus far, the model is trained solely on in-domain data. However, we want to see what happens if we include out-of-domain data in training too. We also want to experiment with doing an additional step of fine-tuning after training where the model exclusively learns from out-of-domain samples. Hopefully, the inclusion of out-of-domain data in training and fine-tuning can improve the model’s ability to generalize to out-of-domain samples.</p>
+<p>Thus far, the model is trained solely on in-domain data. However, we want to see what happens if we include out-of-domain data in training too. We also want to experiment with an additional step of fine-tuning after training where the model exclusively learns from out-of-domain samples. Hopefully, the inclusion of out-of-domain data in training and fine-tuning can improve the model’s ability to generalize to out-of-domain samples.</p>
 
 <h2 id="data-augmentation">
 <a class="anchor" href="#data-augmentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Augmentation</h2>
 <p>As we have limited out-of-domain data to train and finetune on, we hypothesize that out-of-domain
 data augmentation may help improve the performance of our model. Thus, we expand our out-of-domain samples using 2 methods:</p>
 
-<p><strong>EDA: Synonym Swapping</strong>. We implement the synonym swap method from the <a href="https://github.com/makcedward/nlpaug">nlpaug</a>
+<p><strong>Easy Data Augmentation (EDA): Synonym Swapping</strong>. We implement the synonym swap method from the <a href="https://github.com/makcedward/nlpaug">nlpaug</a>
 package for easy data augmentation. To accomplish this, we replace random words in the context paragraph with its synonyms. Here is an example:</p>
 
 <p>Original context paragraph: “Quentin is a big <strong>fan</strong> of machine learning. He can’t stop <strong>building</strong> models.”</p>
@@ -261,11 +261,11 @@ Lipschitz constraint, which regularizes adversarial training and improves stabil
 
 <h2 id="ensemble-methods">
 <a class="anchor" href="#ensemble-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ensemble Methods</h2>
-<p>Finally, we explore ensembling different performant models together to reduce overall variance. Intuitively, different models have different noise patterns. By ensembling them together, noise patterns cancel out and the resultant ensemble achieves better and more stable performance. We experiment ensembling the best model for each out-of-domain dataset (total of 3 component models).</p>
+<p>Finally, we explore ensembling different performant models together to reduce overall variance. Intuitively, different models have different noise patterns. By ensembling them together, noise patterns cancel out and the resultant ensemble achieves better and more stable performance. We experiment ensembling the best models for each out-of-domain dataset.</p>
 
 <h1 id="overall-results--insights">
 <a class="anchor" href="#overall-results--insights" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overall Results &amp; Insights</h1>
-<p>After running a series of experiments, we find that training a Wiki-aligned adversarial model on additional synthetic out-of-domain samples and subsequently fine-tuning it on augmented oo-domain samples (using synonym replacement) produces the best results. The model achieves an F1 score of <strong>55.53</strong>, which is a <strong>11% improvement in dev F1 over the baseline.</strong></p>
+<p>After running a series of experiments, we find that training a Wiki-aligned adversarial model on additional synthetic out-of-domain samples and subsequently fine-tuning it on EDA (synonym replacement) out-of-domain samples produces the best results. The model achieves an F1 score of <strong>55.53</strong>, which is a <strong>11% improvement in dev F1 over the baseline.</strong></p>
 
 <p>Here are some of our key insights (for a more comprehensive and detailed list, please see the actual report):</p>
 
@@ -277,10 +277,11 @@ Lipschitz constraint, which regularizes adversarial training and improves stabil
     <p>Wiki alignment is crucial in helping the discriminator learn better, which in turn improves QA model performance. <strong>Having well-defined domains is thus imperative for effective adversarial learning.</strong></p>
   </li>
   <li>
-    <p>Including synthetic out-of-domain samples helps training, but hurts fine-tuning. The opposite is true for augmented (synonym replacement) out-of-domain samples. We suspect that the model is very sensitive to the quality of out-of-domain samples during fine-tuning as it is trying to extract precise features from the samples. <strong>As such, synthetic question generation performs more poorly than simple synonym replacement as it attempts to recreate questions from scratch and is thus noisier.</strong>
-In contrast, during training, the noise of out-of-domain samples is less of a concern since (i) we are trying to learn general domain-invariant features rather than precise domain-specific features and (ii) the noise is averaged over a much larger dataset. What is important is having a diversity of question-answer pairs for more parts of the context paragraph. Intuitively, the original dataset has large context paragraphs with only a few questions that look at specific parts of the paragraph. Example:</p>
+    <p>Including synthetic out-of-domain samples helps training, but hurts fine-tuning. The opposite is true for EDA (synonym replacement) out-of-domain samples. We suspect that the model is very sensitive to the quality of out-of-domain samples during fine-tuning as it is trying to extract precise features from the samples. <strong>As such, synthetic question generation performs more poorly than simple synonym replacement as it attempts to recreate questions from scratch and is thus noisier.</strong></p>
   </li>
 </ol>
+
+<p>In contrast, during training, the noise of out-of-domain samples is less of a concern since (i) we are trying to learn general domain-invariant features rather than precise domain-specific features and (ii) the noise is averaged over a much larger dataset. What is important is having a diversity of question-answer pairs for more parts of the context paragraph. Intuitively, the original dataset contains context paragraphs with only a few question-answer pairs that look at small sections of the paragarph. Example:</p>
 
 <p>Context paragraph: “Hi, I am Quentin. I love eating burgers and cooking them by myself. I aspire to be a chef one day and open my own burger restaurant. By the way, my birthday is next month so you know what to get me!”</p>
 
@@ -288,28 +289,30 @@ In contrast, during training, the noise of out-of-domain samples is less of a co
 
 <p>Answer: “next month”</p>
 
-<p>The model can get away with reading only a small section of the paragraph, which prevents it from fully understanding the context paragraph. If we can create new question-answer pairs that covers the <em>entire</em> context paragraph, we will force our QA model and discriminator to learn about the structure and characteristics of the entire paragraph. This in turn allows it to learn domain-invariant features better. <strong>Synthetic question generation tackles this root problem and thus performs much better than simple synonym replacement when used in training.</strong></p>
+<p>Thus, the model can get away with reading only a small section of the paragraph, preventing it from fully understanding the context paragraph. If we can create new question-answer pairs that covers the <em>entire</em> context paragraph, we will force our QA model and discriminator to learn about the structure and characteristics of the entire paragraph. This in turn allows it to learn domain-invariant features better. <strong>By increasing the diversity of question-answer pairs, synthetic question generation tackles this root problem and thus performs much better than simple synonym replacement during training.</strong></p>
 
 <ol>
   <li>Tuning discriminator architecture using Lambda annealing and Wasserstein regularization leads to a slight degradation in performance on our best model. We think that synthetic out-of-domain training data already sufficiently improves discriminator training by providing enough out-of-domain samples from the adversarial model to learn on. <strong>As such, the imposition of additional constraints may be unnecessary and potentially harmful to model performance.</strong> For instance, it is not necessary to anneal lambda from 0 if the discriminator is already able to handle difficult examples from the get-go. Doing so will only deprive it of valuable training time.</li>
 </ol>
 
-<p>Finally, we explore ensembling and ensemble together the best models for each out-of-domain dataset. The ensemble achieves a <strong>dev F1 of 57.8</strong>6, which is a** 16% improvement over the baseline.** It also achieves a <strong>test F1 of 65.27</strong>, which is a <strong>10% improvement over baseline.</strong> By averaging across models with different noise patterns, <strong>ensembling is an effective way of boosting performance.</strong></p>
+<p>Finally, we explore ensembling and ensemble together the best models for each out-of-domain dataset. The ensemble achieves a <strong>dev F1 of 57.86</strong>, which is a <strong>16% improvement over the baseline.</strong> It also achieves a <strong>test F1 of 65.27</strong>, which is a <strong>10% improvement over baseline.</strong> By averaging across models with different noise patterns, <strong>ensembling is an effective way of boosting performance.</strong></p>
 
 <h1 id="conclusion">
 <a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h1>
-<p>We implemented a variety of techniques that boosted the robustness of a QA model to domain shifts, achieving a 16% improvement in dev F1 and a 10% improvement in test F1. Here are some questions that we want to consider exploring:</p>
+<p>We implemented a variety of techniques that boosted the robustness of a QA model to domain shifts, achieving a 16% improvement in dev F1 and a 10% improvement in test F1. Here are some questions that we want to continue exploring:</p>
 
 <ul>
   <li>
-    <p>What if we redefine domains in a more computational way (vs using a simple heuristic)? For instance, clustering together samples with similar word embeddings as one domain. This might allow us to pick up deeper domain relationships.</p>
+    <p>What if we redefine domains in a more computational way (vs using a simple heuristic)? For instance, clustering together samples with similar word embeddings as one domain. This might allow us to pick up deeper and more nuanced domain relationships.</p>
   </li>
   <li>
-    <p>What if we explore different ways of augmented out-of-domain samples? We have tried out synonym replacement but what about other techniques such as random insertion (where words are randomly inserted into the paragraph)?</p>
+    <p>What if we explore different ways of augmenting out-of-domain samples? We have tried out synonym replacement but what about other techniques such as random insertion (where words are randomly inserted into the paragraph) and random deletion (where words are randomly deleted from the paragarph)?</p>
   </li>
 </ul>
 
 <p>There remains much work to be done to make our QA systems robust and accessible for all. Thank you for reading!</p>
+
+<p><em>(Cover picture from TechRepublic)</em></p>
 
 
   </div><!-- from https://github.com/utterance/utterances -->
@@ -320,7 +323,7 @@ In contrast, during training, the noise of out-of-domain samples is less of a co
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-QA-systems-to-new-domains.html" hidden></a>
+</script><a class="u-url" href="/writing/projects/nlp/deep%20learning/2022/03/18/Generating-Robustness-Adapting-Question-and-Answering-systems-to-new-domains.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
