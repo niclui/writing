@@ -1,6 +1,6 @@
 ---
-title: Generating Robustness - Adapting QA systems to new domains
-description: A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a QA model, improving its ability to generalize to new domains.
+title: Generating Robustness - Adapting Question and Answering systems to new domains
+description: A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a question and answering model, improving its ability to generalize to new domains.
 toc: true
 comments: true
 layout: post
@@ -36,7 +36,7 @@ In our project, we implement a variety of techniques that boost the robustness o
 We are given 3 in-domain training datasets, each with 50,000 samples. The datasets are SQuAD (Wikipedia articles), NaturalQuestions (Wikipedia articles), and NewsQA (news articles). We are also given 3 out-of-domain training datasets, each with approximately 100 samples. The datasets are RelationExtraction (Wikipedia articles), DuoRC (movie reviews), and RACE (examination questions). Performance is evaluated on the out-of-domain validation set.
 
 # Baseline
-Our baseline model is a DistilBERT trained solely on in-domain data. It achieves an F1 score of 49.88. In the sections below, I will talk about the techniques we employed, followed by any interesting insights we gleaned.
+Our baseline model is a DistilBERT trained solely on in-domain data. It achieves an **F1 score of 49.88**. In the sections below, I will talk about the techniques we employed, followed by overall results and insights.
 
 # Techniques
 
@@ -64,13 +64,13 @@ between the uniform distribution over all K domains and the discriminator’s ac
 The final loss for the QA model is given by CE + λ * KLD where λ is a hyper-parameter for controlling the importance of adversarial loss. We use λ = 0.01 as previous work finds this value of lambda performs best in ablation studies
 
 ## Using out-of-domain data in training and fine-tuning
-Thus far, the model is trained solely on in-domain data. However, we want to see what happens if we include out-of-domain data in training too. We also want to experiment with doing an additional step of fine-tuning after training where the model exclusively learns from out-of-domain samples. Hopefully, the inclusion of out-of-domain data in training and fine-tuning can improve the model's ability to generalize to out-of-domain samples. 
+Thus far, the model is trained solely on in-domain data. However, we want to see what happens if we include out-of-domain data in training too. We also want to experiment with an additional step of fine-tuning after training where the model exclusively learns from out-of-domain samples. Hopefully, the inclusion of out-of-domain data in training and fine-tuning can improve the model's ability to generalize to out-of-domain samples. 
 
 ## Data Augmentation
 As we have limited out-of-domain data to train and finetune on, we hypothesize that out-of-domain
 data augmentation may help improve the performance of our model. Thus, we expand our out-of-domain samples using 2 methods:
 
-**EDA: Synonym Swapping**. We implement the synonym swap method from the <a href="https://github.com/makcedward/nlpaug">nlpaug</a>
+**Easy Data Augmentation (EDA): Synonym Swapping**. We implement the synonym swap method from the <a href="https://github.com/makcedward/nlpaug">nlpaug</a>
 package for easy data augmentation. To accomplish this, we replace random words in the context paragraph with its synonyms. Here is an example:
 
 Original context paragraph: "Quentin is a big **fan** of machine learning. He can't stop **building** models."
@@ -119,10 +119,10 @@ clipped between -0.01 and 0.01 before backward propagation. Weight clipping can 
 Lipschitz constraint, which regularizes adversarial training and improves stability.
 
 ## Ensemble Methods
-Finally, we explore ensembling different performant models together to reduce overall variance. Intuitively, different models have different noise patterns. By ensembling them together, noise patterns cancel out and the resultant ensemble achieves better and more stable performance. We experiment ensembling the best model for each out-of-domain dataset (total of 3 component models).
+Finally, we explore ensembling different performant models together to reduce overall variance. Intuitively, different models have different noise patterns. By ensembling them together, noise patterns cancel out and the resultant ensemble achieves better and more stable performance. We experiment ensembling the best models for each out-of-domain dataset.
 
 # Overall Results & Insights
-After running a series of experiments, we find that training a Wiki-aligned adversarial model on additional synthetic out-of-domain samples and subsequently fine-tuning it on augmented oo-domain samples (using synonym replacement) produces the best results. The model achieves an F1 score of **55.53**, which is a **11% improvement in dev F1 over the baseline.**
+After running a series of experiments, we find that training a Wiki-aligned adversarial model on additional synthetic out-of-domain samples and subsequently fine-tuning it on EDA (synonym replacement) out-of-domain samples produces the best results. The model achieves an F1 score of **55.53**, which is a **11% improvement in dev F1 over the baseline.**
 
 Here are some of our key insights (for a more comprehensive and detailed list, please see the actual report):
 
@@ -130,8 +130,9 @@ Here are some of our key insights (for a more comprehensive and detailed list, p
 
 2.	Wiki alignment is crucial in helping the discriminator learn better, which in turn improves QA model performance. **Having well-defined domains is thus imperative for effective adversarial learning.**
 
-3.	Including synthetic out-of-domain samples helps training, but hurts fine-tuning. The opposite is true for augmented (synonym replacement) out-of-domain samples. We suspect that the model is very sensitive to the quality of out-of-domain samples during fine-tuning as it is trying to extract precise features from the samples. **As such, synthetic question generation performs more poorly than simple synonym replacement as it attempts to recreate questions from scratch and is thus noisier.**
-In contrast, during training, the noise of out-of-domain samples is less of a concern since (i) we are trying to learn general domain-invariant features rather than precise domain-specific features and (ii) the noise is averaged over a much larger dataset. What is important is having a diversity of question-answer pairs for more parts of the context paragraph. Intuitively, the original dataset has large context paragraphs with only a few questions that look at specific parts of the paragraph. Example:
+3.	Including synthetic out-of-domain samples helps training, but hurts fine-tuning. The opposite is true for EDA (synonym replacement) out-of-domain samples. We suspect that the model is very sensitive to the quality of out-of-domain samples during fine-tuning as it is trying to extract precise features from the samples. **As such, synthetic question generation performs more poorly than simple synonym replacement as it attempts to recreate questions from scratch and is thus noisier.**
+
+In contrast, during training, the noise of out-of-domain samples is less of a concern since (i) we are trying to learn general domain-invariant features rather than precise domain-specific features and (ii) the noise is averaged over a much larger dataset. What is important is having a diversity of question-answer pairs for more parts of the context paragraph. Intuitively, the original dataset contains context paragraphs with only a few question-answer pairs that look at small sections of the paragarph. Example:
 
 Context paragraph: “Hi, I am Quentin. I love eating burgers and cooking them by myself. I aspire to be a chef one day and open my own burger restaurant. By the way, my birthday is next month so you know what to get me!”
 
@@ -139,20 +140,22 @@ Question: “When is Quentin’s birthday?”
 
 Answer: “next month”
 
-The model can get away with reading only a small section of the paragraph, which prevents it from fully understanding the context paragraph. If we can create new question-answer pairs that covers the _entire_ context paragraph, we will force our QA model and discriminator to learn about the structure and characteristics of the entire paragraph. This in turn allows it to learn domain-invariant features better. **Synthetic question generation tackles this root problem and thus performs much better than simple synonym replacement when used in training.**
+Thus, the model can get away with reading only a small section of the paragraph, preventing it from fully understanding the context paragraph. If we can create new question-answer pairs that covers the _entire_ context paragraph, we will force our QA model and discriminator to learn about the structure and characteristics of the entire paragraph. This in turn allows it to learn domain-invariant features better. **By increasing the diversity of question-answer pairs, synthetic question generation tackles this root problem and thus performs much better than simple synonym replacement during training.**
 
 4.	Tuning discriminator architecture using Lambda annealing and Wasserstein regularization leads to a slight degradation in performance on our best model. We think that synthetic out-of-domain training data already sufficiently improves discriminator training by providing enough out-of-domain samples from the adversarial model to learn on. **As such, the imposition of additional constraints may be unnecessary and potentially harmful to model performance.** For instance, it is not necessary to anneal lambda from 0 if the discriminator is already able to handle difficult examples from the get-go. Doing so will only deprive it of valuable training time.
 
-Finally, we explore ensembling and ensemble together the best models for each out-of-domain dataset. The ensemble achieves a **dev F1 of 57.8**6, which is a** 16% improvement over the baseline.** It also achieves a **test F1 of 65.27**, which is a **10% improvement over baseline.** By averaging across models with different noise patterns, **ensembling is an effective way of boosting performance.**
+Finally, we explore ensembling and ensemble together the best models for each out-of-domain dataset. The ensemble achieves a **dev F1 of 57.86**, which is a **16% improvement over the baseline.** It also achieves a **test F1 of 65.27**, which is a **10% improvement over baseline.** By averaging across models with different noise patterns, **ensembling is an effective way of boosting performance.**
 
 # Conclusion
-We implemented a variety of techniques that boosted the robustness of a QA model to domain shifts, achieving a 16% improvement in dev F1 and a 10% improvement in test F1. Here are some questions that we want to consider exploring:
+We implemented a variety of techniques that boosted the robustness of a QA model to domain shifts, achieving a 16% improvement in dev F1 and a 10% improvement in test F1. Here are some questions that we want to continue exploring:
 
--	What if we redefine domains in a more computational way (vs using a simple heuristic)? For instance, clustering together samples with similar word embeddings as one domain. This might allow us to pick up deeper domain relationships.
+-	What if we redefine domains in a more computational way (vs using a simple heuristic)? For instance, clustering together samples with similar word embeddings as one domain. This might allow us to pick up deeper and more nuanced domain relationships.
 
--	What if we explore different ways of augmented out-of-domain samples? We have tried out synonym replacement but what about other techniques such as random insertion (where words are randomly inserted into the paragraph)?
+-	What if we explore different ways of augmenting out-of-domain samples? We have tried out synonym replacement but what about other techniques such as random insertion (where words are randomly inserted into the paragraph) and random deletion (where words are randomly deleted from the paragarph)?
 
 There remains much work to be done to make our QA systems robust and accessible for all. Thank you for reading!
+
+_(Cover picture from TechRepublic)_
 
 
 
