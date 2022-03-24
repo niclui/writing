@@ -1,6 +1,6 @@
 ---
 title: Generating Robustness - Adapting Question and Answering systems to new domains
-description: A project that my team worked on for our Stanford CS224N project. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a question and answering model, improving its ability to generalize to new domains.
+description: A project that my team worked on for our Stanford CS224N project, which won the Best Poster Award. We implement a variety of techniques (e.g. adversarial learning) that boost the robustness of a question and answering model, improving its ability to generalize to new domains.
 toc: true
 comments: true
 layout: post
@@ -12,7 +12,7 @@ author: Nicholas
 I would like to express my deep gratitude to my teammates (Helen Gu and Quentin Hsu) for their collaborative spirit, research ambition, and willingness to tackle open-ended problems
 with tenacity. Here is our
 <a href="https://drive.google.com/file/d/1-cleNk6Auyrk2rEEW7fBM30FPiLhYORX/view?usp=sharing">project report</a>
-and <a href="https://drive.google.com/file/d/1qyAD_KEot7g21jRoFcN6Val0RHBb_1Z1/view?usp=sharing">poster</a>.
+and <a href="https://drive.google.com/file/d/1qyAD_KEot7g21jRoFcN6Val0RHBb_1Z1/view?usp=sharing">poster</a>. Our project won the <a href="https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1224/project.html">Best Poster Award</a>.
 
 # Motivation
 Question and Answering (QA) systems are systems that can automatically answer human questions in a natural language.
